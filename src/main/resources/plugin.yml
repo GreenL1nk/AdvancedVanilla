@@ -1,0 +1,4 @@
+name: AdvancedVanilla
+version: '${version}'
+main: greenlink.advancedvanilla.AdvancedVanilla
+api-version: 1.19

@@ -1,12 +1,12 @@
 package greenlink.advancedvanilla;
 
-import greenlink.advancedvanilla.listeners.IProfessionBase;
+import greenlink.advancedvanilla.professions.ProfessionBase;
 
 import java.util.UUID;
 
 public class APlayer {
     private UUID uuid;
-    private IProfessionBase profession;
+    private ProfessionBase profession;
 
     public APlayer(UUID uuid) {
         this.uuid = uuid;
@@ -17,11 +17,11 @@ public class APlayer {
         return uuid;
     }
 
-    public IProfessionBase getProfession() {
+    public ProfessionBase getProfession() {
         return profession;
     }
 
-    public void setProfession(IProfessionBase profession) {
+    public void setProfession(ProfessionBase profession) {
         this.profession = profession;
     }
 }

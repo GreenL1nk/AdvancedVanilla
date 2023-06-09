@@ -16,6 +16,6 @@ public class PlayerManager {
     }
 
     public APlayer getPlayer(@NotNull UUID uuid){
-        return ((APlayer) players.get(uuid));
+        return players.get(uuid);
     }
 }

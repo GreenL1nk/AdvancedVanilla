@@ -1,10 +1,14 @@
-package greenlink.advancedvanilla.listeners;
+package greenlink.advancedvanilla.professions.miner;
 
-import org.bukkit.block.Block;
+import greenlink.advancedvanilla.professions.ProfessionBase;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public class Miner implements IProfessionBase {
+public class Miner extends ProfessionBase {
+    public Miner(String name) {
+        super(name);
+    }
+
     protected void onBreak(BlockBreakEvent event){
 
     }

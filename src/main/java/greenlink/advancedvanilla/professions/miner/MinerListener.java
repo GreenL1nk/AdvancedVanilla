@@ -1,6 +1,6 @@
 package greenlink.advancedvanilla.professions.miner;
 
-import greenlink.advancedvanilla.APlayer;
+import greenlink.advancedvanilla.RpPlayer;
 import greenlink.advancedvanilla.PlayerManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -12,8 +12,8 @@ public class MinerListener extends Miner {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
-        APlayer aPlayer = PlayerManager.getInstance().getPlayer(event.getPlayer().getUniqueId());
-        if (aPlayer.getProfession() instanceof Miner) ((Miner) aPlayer.getProfession()).onBreak(event);
+        RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(event.getPlayer().getUniqueId());
+        if (rpPlayer.getProfession() instanceof Miner) ((Miner) rpPlayer.getProfession()).onBreak(event);
             else {
                 /*
                 Делается если чел не имеет нужную профессию

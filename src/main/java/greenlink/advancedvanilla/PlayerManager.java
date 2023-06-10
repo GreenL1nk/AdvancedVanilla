@@ -6,16 +6,26 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class PlayerManager {
-    private HashMap<UUID, APlayer> players = new HashMap<>();
+    private HashMap<UUID, RpPlayer> players = new HashMap<>();
     private static PlayerManager instance;
-    private PlayerManager(){};
+    private final DatabaseConnector dataBase;
+    private PlayerManager(){
+        dataBase = DatabaseConnector.getInstance();
+    }
 
     public static PlayerManager getInstance(){
         if (instance == null) instance = new PlayerManager();
         return instance;
     }
 
-    public APlayer getPlayer(@NotNull UUID uuid){
-        return players.get(uuid);
+    public RpPlayer getPlayer(@NotNull UUID uuid){
+        RpPlayer rpPlayer = players.get(uuid);
+
+        if (rpPlayer == null) {
+            rpPlayer = dataBase.getPlayer(uuid);
+            players.put(uuid, rpPlayer);
+        }
+
+        return rpPlayer;
     }
 }

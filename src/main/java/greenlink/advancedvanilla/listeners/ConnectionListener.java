@@ -20,7 +20,8 @@ public class ConnectionListener implements Listener {
     @EventHandler
     public void test(PlayerCommandPreprocessEvent e) {
         if (e.getMessage().equals("/test") && e.getPlayer().isOp()) {
-            PlayerManager.getInstance().getPlayer(e.getPlayer().getUniqueId()).setProfession(Professions.MINER);
+            boolean b = PlayerManager.getInstance().getPlayer(e.getPlayer().getUniqueId()).setProfession(Professions.MINER);
+            Bukkit.broadcastMessage(String.valueOf(b));
         }
         if (e.getMessage().equals("/prof") && e.getPlayer().isOp()) {
             Bukkit.broadcastMessage(String.valueOf(PlayerManager.getInstance().getPlayer(e.getPlayer().getUniqueId()).getProfession().getName()));

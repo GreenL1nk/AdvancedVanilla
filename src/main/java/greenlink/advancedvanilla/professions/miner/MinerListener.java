@@ -5,14 +5,14 @@ import greenlink.advancedvanilla.RpPlayer;
 import lib.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class MinerListener implements Listener {
+public class MinerListener extends Miner {
     public MinerListener() {
+        super("");
     }
 
     @EventHandler
@@ -34,7 +34,11 @@ public class MinerListener implements Listener {
     @EventHandler
     public void onClickBlock(PlayerInteractEvent event){
         if (event.getClickedBlock() == null) return;
-        if (event.getItem() != null && event.getItem().getType() == Material.STONE_PICKAXE) return;
+        if (event.getItem() != null
+                && event.getItem().getType() != Material.IRON_PICKAXE
+                && event.getItem().getType() != Material.GOLDEN_PICKAXE
+                && event.getItem().getType() != Material.DIAMOND_PICKAXE
+                && event.getItem().getType() != Material.NETHERITE_PICKAXE) return;
         if (!event.getAction().isLeftClick()) return;
         RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(event.getPlayer().getUniqueId());
         if (!(rpPlayer.getProfession() instanceof Miner)) {

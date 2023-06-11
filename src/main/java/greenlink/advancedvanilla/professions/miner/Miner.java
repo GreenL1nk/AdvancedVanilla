@@ -8,8 +8,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class Miner extends ProfessionBase {
 
-    public Miner(String name, Listener listener) {
-        super(name, listener);
+    public Miner(String name) {
+        super(name);
     }
 
     protected void onBreak(BlockBreakEvent event){

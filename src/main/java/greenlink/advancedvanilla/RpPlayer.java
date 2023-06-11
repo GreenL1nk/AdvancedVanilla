@@ -1,24 +1,27 @@
 package greenlink.advancedvanilla;
 
 import greenlink.advancedvanilla.professions.ProfessionBase;
+import greenlink.advancedvanilla.professions.ProfessionManager;
+import greenlink.advancedvanilla.professions.Professions;
 
 import java.util.UUID;
 
 public class RpPlayer {
     private final UUID uuid;
     private ProfessionBase profession;
-    private ProfessionBase old_profession;
+    private ProfessionBase oldProfession;
+    private long professionChangeTime;
 
     public RpPlayer(UUID uuid) {
         this.uuid = uuid;
         this.profession = null;
-        this.old_profession = null;
+        this.oldProfession = null;
     }
 
-    public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase old_profession) {
+    public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession) {
         this.uuid = uuid;
         this.profession = profession;
-        this.old_profession = old_profession;
+        this.oldProfession = oldProfession;
     }
 
     public UUID getUuid() {
@@ -29,15 +32,22 @@ public class RpPlayer {
         return profession;
     }
 
-    public void setProfession(ProfessionBase profession) {
+    public boolean setProfession(Professions professions) {
+        ProfessionBase profession = ProfessionManager.getInstance().getProfession(professions);
+        long currentTime = System.currentTimeMillis();
+        if (profession == null) return false;
+        if (professionChangeTime < currentTime) return false;
+//        professionChangeTime = currentTime + 43200000L; //12ч
+        professionChangeTime = currentTime + 60000;
         this.profession = profession;
+        return true;
     }
 
-    public ProfessionBase getOld_profession() {
-        return old_profession;
+    public ProfessionBase getOldProfession() {
+        return oldProfession;
     }
 
-    public void setOld_profession(ProfessionBase old_profession) {
-        this.old_profession = old_profession;
+    public void setOldProfession(ProfessionBase oldProfession) {
+        this.oldProfession = oldProfession;
     }
 }

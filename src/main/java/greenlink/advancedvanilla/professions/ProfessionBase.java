@@ -3,14 +3,12 @@ package greenlink.advancedvanilla.professions;
 
 import org.bukkit.event.Listener;
 
-public abstract class ProfessionBase {
-    private final String name;
+public abstract class ProfessionBase implements Listener {
+    protected final String name;
     private int level;
-    private final Listener listener;
 
-    public ProfessionBase(String name, Listener listener) {
+    public ProfessionBase(String name) {
         this.name = name;
-        this.listener = listener;
     }
 
     public String getName() {
@@ -23,9 +21,5 @@ public abstract class ProfessionBase {
 
     public void setLevel(int level) {
         this.level = level;
-    }
-
-    public Listener getListener() {
-        return listener;
     }
 }

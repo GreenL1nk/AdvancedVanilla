@@ -2,6 +2,7 @@ package greenlink.advancedvanilla;
 
 import greenlink.advancedvanilla.listeners.ConnectionListener;
 import greenlink.advancedvanilla.listeners.InventoryListener;
+import greenlink.advancedvanilla.professions.ProfessionManager;
 import greenlink.advancedvanilla.tradeSystem.VillagerTradingSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

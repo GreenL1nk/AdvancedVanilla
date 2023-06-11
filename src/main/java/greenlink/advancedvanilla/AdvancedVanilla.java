@@ -1,6 +1,8 @@
 package greenlink.advancedvanilla;
 
+import greenlink.advancedvanilla.listeners.ConnectionListener;
 import greenlink.advancedvanilla.listeners.InventoryListener;
+import greenlink.advancedvanilla.professions.ProfessionFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +16,10 @@ public final class AdvancedVanilla extends JavaPlugin {
         instance = this;
 
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ConnectionListener(), this);
+        ProfessionFactory.professionListeners().forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
+
+
     }
 
     @Override

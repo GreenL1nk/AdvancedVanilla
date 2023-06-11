@@ -3,7 +3,6 @@ package greenlink.advancedvanilla;
 import greenlink.advancedvanilla.professions.ProfessionBase;
 import greenlink.advancedvanilla.professions.ProfessionManager;
 import greenlink.advancedvanilla.professions.Professions;
-import org.bukkit.Bukkit;
 
 import java.util.UUID;
 

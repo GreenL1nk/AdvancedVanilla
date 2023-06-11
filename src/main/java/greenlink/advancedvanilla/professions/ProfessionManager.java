@@ -2,13 +2,14 @@ package greenlink.advancedvanilla.professions;
 
 import greenlink.advancedvanilla.professions.miner.Miner;
 import greenlink.advancedvanilla.professions.miner.MinerListener;
-import org.bukkit.Bukkit;
+import greenlink.advancedvanilla.professions.requirements.MineRequirements;
+import org.bukkit.Material;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public class ProfessionManager {
     private static ProfessionManager instance;
@@ -21,7 +22,12 @@ public class ProfessionManager {
     public ProfessionBase getProfession(Professions profession) {
         switch (profession) {
             case MINER -> {
-                return new Miner("Шахтёр");
+                return new Miner("Шахтёр",
+                        new Level(1,
+                                new MineRequirements(new ItemStack(Material.STONE, 50)),
+                                new MineRequirements( new ItemStack(Material.GOLD_ORE, 25)),
+                                new MineRequirements(new ItemStack(Material.DIAMOND_ORE, 30))
+                        ));
             }
             default -> {
                 return null;

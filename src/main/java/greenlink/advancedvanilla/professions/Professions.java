@@ -4,7 +4,7 @@ import greenlink.advancedvanilla.professions.miner.Miner;
 
 public enum Professions {
 
-    MINER(new Miner("Шахтёр"));
+    MINER(new Miner(""));
 
     private final ProfessionBase professionBase;
 

@@ -2,7 +2,6 @@ package greenlink.advancedvanilla.listeners;
 
 import greenlink.advancedvanilla.PlayerManager;
 import greenlink.advancedvanilla.RpPlayer;
-import greenlink.advancedvanilla.professions.ProfessionManager;
 import greenlink.advancedvanilla.professions.Professions;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

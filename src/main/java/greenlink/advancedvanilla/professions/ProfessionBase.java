@@ -5,21 +5,27 @@ import org.bukkit.event.Listener;
 
 public abstract class ProfessionBase implements Listener {
     protected final String name;
-    private int level;
+    private int currentLevel;
+    private final Level[] levels;
 
-    public ProfessionBase(String name) {
+    public ProfessionBase(String name, Level[] levels) {
         this.name = name;
+        this.levels = levels;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getLevel() {
-        return level;
+    public int getCurrentLevel() {
+        return currentLevel;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public Level[] getLevels() {
+        return levels;
     }
 }

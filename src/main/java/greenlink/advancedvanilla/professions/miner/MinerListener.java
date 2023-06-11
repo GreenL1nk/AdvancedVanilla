@@ -2,6 +2,9 @@ package greenlink.advancedvanilla.professions.miner;
 
 import greenlink.advancedvanilla.PlayerManager;
 import greenlink.advancedvanilla.RpPlayer;
+import greenlink.advancedvanilla.professions.Level;
+import greenlink.advancedvanilla.professions.requirements.MineRequirements;
+import greenlink.advancedvanilla.professions.requirements.Requirements;
 import lib.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -9,6 +12,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class MinerListener extends Miner {
     public MinerListener() {
@@ -18,7 +24,16 @@ public class MinerListener extends Miner {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
         RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(event.getPlayer().getUniqueId());
-        if (rpPlayer.getProfession() instanceof Miner) ((Miner) rpPlayer.getProfession()).onBreak(event);
+        if (rpPlayer.getProfession() instanceof Miner) {
+            Level level = rpPlayer.getProfession().getLevels()[rpPlayer.getProfession().getCurrentLevel()];
+
+            Arrays.stream(level.requirements())
+                    .filter(requirements -> requirements instanceof MineRequirements)
+                    .filter(requirements -> ((MineRequirements) requirements).getItemStack().getType().equals(event.getBlock().getType()))
+                    .forEach(requirements -> ((MineRequirements) requirements).incrementCurrentProgress());
+
+            ((Miner) rpPlayer.getProfession()).onBreak(event);
+        }
         else {
             if (event.getBlock().getType() == Material.GOLD_ORE
                     || event.getBlock().getType() == Material.REDSTONE_ORE

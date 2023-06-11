@@ -10,7 +10,9 @@ public class PlayerManager {
     private static PlayerManager instance;
     private final DatabaseConnector dataBase;
     private PlayerManager(){
-        dataBase = DatabaseConnector.getInstance();
+
+        //dataBase = DatabaseConnector.getInstance();
+        dataBase = null;
     }
 
     public static PlayerManager getInstance(){
@@ -22,7 +24,8 @@ public class PlayerManager {
         RpPlayer rpPlayer = players.get(uuid);
 
         if (rpPlayer == null) {
-            rpPlayer = dataBase.getPlayer(uuid);
+            rpPlayer = new RpPlayer(uuid);
+            //rpPlayer = dataBase.getPlayer(uuid);
             players.put(uuid, rpPlayer);
         }
 

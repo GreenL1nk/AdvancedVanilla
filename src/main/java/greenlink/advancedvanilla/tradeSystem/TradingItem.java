@@ -1,7 +1,16 @@
 package greenlink.advancedvanilla.tradeSystem;
 
+import greenlink.advancedvanilla.PlayerManager;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class TradingItem {
     private Material material;
@@ -46,9 +55,7 @@ public class TradingItem {
 
         if (singleItem)
         {
-            /*
-            todo Checking having enought money and take them
-             */
+            if ( !PlayerManager.getInstance().getPlayer(player.getUniqueId()).takeMoney(getNowBuyPrice()) ) return false;
             leftForLevelChange--;
             if (leftForLevelChange == 0) {
                 lastPriceChange = System.currentTimeMillis();
@@ -59,12 +66,18 @@ public class TradingItem {
                 }
                 leftForLevelChange = amplitudes[Math.abs(nowTradeLevel)];
             }
+            HashMap<Integer, ItemStack> items = player.getInventory().addItem(new ItemStack(this.material, this.count));
+            Location location = player.getLocation();
+            Set<Map.Entry<Integer, ItemStack>> entries = items.entrySet();
+            int dropingItems = 0;
+            for (Map.Entry<Integer, ItemStack> entry : entries) {
+                dropingItems = entry.getKey();
+            }
+            if (dropingItems != 0) location.getWorld().dropItemNaturally(location, new ItemStack(this.material, dropingItems));
         }
         else {
             int countOfBuyingItems = Math.min(64, leftForLevelChange);
-             /*
-            todo Checking having enought money and take them
-             */
+            if ( !PlayerManager.getInstance().getPlayer(player.getUniqueId()).takeMoney(getNowBuyPrice()*countOfBuyingItems) ) return false;
             leftForLevelChange-=countOfBuyingItems;
 
             if (leftForLevelChange == 0) {
@@ -76,17 +89,20 @@ public class TradingItem {
                 }
                 leftForLevelChange = amplitudes[Math.abs(nowTradeLevel)];
             }
-
+            HashMap<Integer, ItemStack> items = player.getInventory().addItem(new ItemStack(this.material, this.count*countOfBuyingItems));
+            Location location = player.getLocation();
+            Set<Map.Entry<Integer, ItemStack>> entries = items.entrySet();
+            int dropingItems = 0;
+            for (Map.Entry<Integer, ItemStack> entry : entries) {
+                dropingItems = entry.getKey();
+            }
+            if (dropingItems != 0) location.getWorld().dropItemNaturally(location, new ItemStack(this.material, dropingItems));
         }
-
-
-
         return true;
     }
 
-    private int getNowBuyPrice(){
+    public int getNowBuyPrice(){
         return basePrice * ((100 + 15*(nowTradeLevel))/10)/10;
-
     }
 
     public boolean timeCheck(){
@@ -103,4 +119,23 @@ public class TradingItem {
             return false;
     }
 
+    public Material getMaterial() {
+        return material;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public boolean isCanBuy() {
+        return canBuy;
+    }
+
+    public boolean isCanSell() {
+        return canSell;
+    }
+
+    public int getLeftForLevelChange() {
+        return leftForLevelChange;
+    }
 }

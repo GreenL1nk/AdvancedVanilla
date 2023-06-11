@@ -1,5 +1,6 @@
 package greenlink.advancedvanilla;
 
+import greenlink.advancedvanilla.listeners.ConnectionListener;
 import greenlink.advancedvanilla.listeners.InventoryListener;
 import greenlink.advancedvanilla.tradeSystem.VillagerTradingSystem;
 import org.bukkit.Bukkit;
@@ -16,6 +17,8 @@ public final class AdvancedVanilla extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
         Bukkit.getPluginManager().registerEvents(new VillagerTradingSystem(), this);
+        Bukkit.getPluginManager().registerEvents(new ConnectionListener(), this);
+        ProfessionManager.professionListeners().forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
     }
 
     @Override

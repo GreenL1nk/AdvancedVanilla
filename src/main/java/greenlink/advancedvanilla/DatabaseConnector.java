@@ -60,7 +60,7 @@ public class DatabaseConnector {
 
             if(!result.next()) {
                 rpPlayer = new RpPlayer(uuid);
-                String sql = String.format("INSERT INTO current_profession (uuid, current_profession, old_profession) VALUES ('%s', '%s', '%s')",
+                String sql = String.format("INSERT INTO advanced_players (uuid, current_profession, old_profession) VALUES ('%s', '%s', '%s')",
                         uuid, null, null);
                 statement.executeUpdate(sql);
             }

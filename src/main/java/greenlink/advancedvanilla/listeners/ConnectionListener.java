@@ -3,13 +3,20 @@ package greenlink.advancedvanilla.listeners;
 import greenlink.advancedvanilla.PlayerManager;
 import greenlink.advancedvanilla.RpPlayer;
 import greenlink.advancedvanilla.professions.Professions;
+import lib.utils.AbstractListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-public class ConnectionListener implements Listener {
+public class ConnectionListener extends AbstractListener {
+
+    public ConnectionListener(@NotNull JavaPlugin plugin) {
+        super(plugin);
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

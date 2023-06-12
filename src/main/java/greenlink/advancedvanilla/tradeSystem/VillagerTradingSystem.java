@@ -1,6 +1,7 @@
 package greenlink.advancedvanilla.tradeSystem;
 
 import greenlink.advancedvanilla.AdvancedVanilla;
+import lib.utils.AbstractListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -14,15 +15,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class VillagerTradingSystem implements Listener {
+public class VillagerTradingSystem extends AbstractListener {
 
     private HashMap<Villager.Profession, TradingItem[]> tradingItems;
 
-    public VillagerTradingSystem(){
+    public VillagerTradingSystem(JavaPlugin plugin){
+        super(plugin);
         /*
         todo loading from config
          */

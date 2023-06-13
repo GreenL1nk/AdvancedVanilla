@@ -2,6 +2,8 @@ package greenlink.advancedvanilla.tradeSystem;
 
 import greenlink.advancedvanilla.AdvancedVanilla;
 import lib.utils.AbstractInventoryHolder;
+import lib.utils.MyObservable;
+import lib.utils.MyObserver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -21,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class VillagerTradeGui extends AbstractInventoryHolder {
+public class VillagerTradeGui extends AbstractInventoryHolder implements MyObserver {
     private TradingItem[] items;
     private Villager.Profession profession;
     private static HashMap< Villager.Profession, ArrayList<VillagerTradeGui> > guis = new HashMap<>();
@@ -46,10 +48,10 @@ public class VillagerTradeGui extends AbstractInventoryHolder {
 
     @Override
     public void click(InventoryClickEvent event) {
-        Bukkit.broadcast(((TextComponent)Component.text("test1 ")));
+        Bukkit.broadcast(Component.text("test1 "));
         int slot = event.getSlot();
         if ( (slot >= 20 && slot < 25) || (slot >= 29 && slot < 34) ) {
-            Bukkit.broadcast(((TextComponent)Component.text("test2 ")));
+            Bukkit.broadcast(Component.text("test2 "));
             slot-=20;
             slot = (slot/9 * 5) + slot % 9;
             //Bukkit.broadcast( ((TextComponent)Component.text(slot)) );
@@ -63,9 +65,9 @@ public class VillagerTradeGui extends AbstractInventoryHolder {
                 }
             }
 
-            Bukkit.broadcast(((TextComponent)Component.text("test3 ")));
+            Bukkit.broadcast(Component.text("test3 "));
         }
-        Bukkit.broadcast(((TextComponent)Component.text("test4 ")));
+        Bukkit.broadcast(Component.text("test4 "));
         event.setCancelled(true);
     }
 
@@ -83,23 +85,23 @@ public class VillagerTradeGui extends AbstractInventoryHolder {
         for (int i = 0; i < items.length; i++) {
             ItemStack itemStack = new ItemStack(items[i].getMaterial());
             ArrayList<Component> lore = new ArrayList<>();
-            lore.add(((TextComponent)Component.text(" ")));
-            lore.add(((TextComponent)Component.text("Колличество: ").color(TextColor.color(972270))).
-                    append(((TextComponent)Component.text(items[i].getNowBuyPrice()).color(TextColor.color(9290582)))));
-            lore.add(((TextComponent)Component.text(" ")));
+            lore.add(Component.text(" "));
+            lore.add(Component.text("Колличество: ").color(TextColor.color(972270)).
+                    append(Component.text(items[i].getNowBuyPrice()).color(TextColor.color(9290582))));
+            lore.add(Component.text(" "));
 
             if (items[i].isCanBuy()) {
-                lore.add( ((TextComponent)Component.text("Покупка: ").color(TextColor.color(972270))).
-                        append(((TextComponent)Component.text(items[i].getNowBuyPrice()).color(TextColor.color(9290582)))) );
+                lore.add( Component.text("Покупка: ").color(TextColor.color(972270)).
+                        append(Component.text(items[i].getNowBuyPrice()).color(TextColor.color(9290582))) );
             }
 
             if (items[i].isCanSell()) {
-                lore.add( ((TextComponent)Component.text("Продажа: ").color(TextColor.color(972270))).
-                        append(((TextComponent)Component.text(items[i].getNowBuyPrice()-1).color(TextColor.color(9290582)))) );
+                lore.add( Component.text("Продажа: ").color(TextColor.color(972270)).
+                        append(Component.text(items[i].getNowBuyPrice()-1).color(TextColor.color(9290582))) );
             }
 
-            lore.add( ((TextComponent)Component.text("Лимит скупки: ").color(TextColor.color(972270))).
-                    append(((TextComponent)Component.text(items[i].getLeftForLevelChange()).color(TextColor.color(9290582)))) );
+            lore.add( Component.text("Лимит скупки: ").color(TextColor.color(972270)).
+                    append(Component.text(items[i].getLeftForLevelChange()).color(TextColor.color(9290582))) );
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             //itemMeta.displayName(displayName);
@@ -117,5 +119,11 @@ public class VillagerTradeGui extends AbstractInventoryHolder {
         guis.put( profession, guisList );
         openingGui.profession = profession;
         Bukkit.getServer().getScheduler().runTaskLater(AdvancedVanilla.getInstance(),()->{ openingGui.open(); }, 1);
+    }
+
+    // TODO: 13.06.2023 Refactor to observer
+    @Override
+    public void onUpdate(MyObserver observer) {
+
     }
 }

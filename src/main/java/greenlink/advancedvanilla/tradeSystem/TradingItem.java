@@ -1,18 +1,16 @@
 package greenlink.advancedvanilla.tradeSystem;
 
 import greenlink.advancedvanilla.PlayerManager;
+import lib.utils.MyObservable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class TradingItem {
+public class TradingItem extends MyObservable {
     private Material material;
     private int count;
     private int basePrice;
@@ -137,5 +135,9 @@ public class TradingItem {
 
     public int getLeftForLevelChange() {
         return leftForLevelChange;
+    }
+
+    public void registerObserver(  ){
+
     }
 }

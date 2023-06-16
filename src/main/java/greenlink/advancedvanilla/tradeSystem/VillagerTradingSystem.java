@@ -30,7 +30,7 @@ public class VillagerTradingSystem extends AbstractListener {
         todo loading from config
          */
         {
-            TradingItem tradingItem = new TradingItem(Material.IRON_INGOT, 1, 10, new int[]{10, 20, 30, 40}, true, false, new long[]{ 60000,60000,60000,60000});
+            TradingItem tradingItem = new TradingItem(Material.IRON_INGOT, 1, 10, new int[]{10, 20, 30, 40}, true, false, new long[]{ 15000,20000,20000,20000});
             tradingItems = new HashMap<>();
             TradingItem[] items = {tradingItem};
             tradingItems.put(Villager.Profession.TOOLSMITH, items);

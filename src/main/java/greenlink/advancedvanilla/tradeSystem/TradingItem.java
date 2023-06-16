@@ -112,6 +112,7 @@ public class TradingItem extends MyObservable {
             }
             leftForLevelChange = amplitudes[Math.abs(nowTradeLevel)];
             lastPriceChange = System.currentTimeMillis();
+            this.notifyObservers();
             return true;
         } else
             return false;
@@ -137,7 +138,4 @@ public class TradingItem extends MyObservable {
         return leftForLevelChange;
     }
 
-    public void registerObserver(  ){
-
-    }
 }

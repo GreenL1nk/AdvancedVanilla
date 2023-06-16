@@ -1,5 +1,5 @@
 package lib.utils;
 
 public interface MyObserver {
-    public void onUpdate(MyObserver observer);
+    public void onUpdate(MyObservable observable);
 }

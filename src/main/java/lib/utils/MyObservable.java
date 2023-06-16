@@ -19,13 +19,12 @@ public class MyObservable {
     }
 
     public void deleteObserver(MyObserver observer) {
-
         observers.removeElement(observer);
     }
 
     protected void notifyObservers() {
         for (MyObserver observer : observers) {
-            observer.onUpdate(observer);
+            observer.onUpdate(this);
         }
     }
 }

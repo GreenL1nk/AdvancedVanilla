@@ -21,6 +21,7 @@ public final class AdvancedVanilla extends JavaPlugin {
         new EnchantmentsFixListener(this);
         new OneShulkerBoxFixes(this);
         new FiredArrowsSystem(this);
+
         ProfessionManager.professionListeners().forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
     }
 

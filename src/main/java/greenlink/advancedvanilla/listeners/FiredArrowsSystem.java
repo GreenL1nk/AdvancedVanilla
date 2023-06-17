@@ -27,26 +27,26 @@ public class FiredArrowsSystem extends AbstractListener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void specialFireArrows(EntityShootBowEvent event){
-        if ( event.getBow() != null ){
+    public void specialFireArrows(EntityShootBowEvent event) {
+        if (event.getBow() != null) {
             event.getBow().removeEnchantment(Enchantment.ARROW_FIRE);
         }
 
-        if ( event.getProjectile().getType().equals(EntityType.ARROW) ) {
+        if (event.getProjectile().getType().equals(EntityType.ARROW)) {
             Arrow arrow = (Arrow) event.getProjectile();
 
-            if (event.getArrowItem().getItemMeta() != null && event.getArrowItem().getItemMeta().getLore()!= null) {
+            if (event.getArrowItem().getItemMeta() != null && event.getArrowItem().getItemMeta().getLore() != null) {
                 int i = 0;
                 int fireFlag = 0;
                 // TODO: 12.06.2023 refactor to Component
                 for (String loreString : event.getArrowItem().getItemMeta().getLore()) {
 
-                    if ( i == 0 && loreString.equals("§6special")) fireFlag++;
-                    if ( i == 1 && loreString.equals("§cfired")) fireFlag++;
+                    if (i == 0 && loreString.equals("§6special")) fireFlag++;
+                    if (i == 1 && loreString.equals("§cfired")) fireFlag++;
                     i++;
-                    if (i > 1) break;;
+                    if (i > 1) break;
                 }
-                if ( fireFlag == 2) {
+                if (fireFlag == 2) {
                     arrow.setFireTicks(2000);
                 }
             }
@@ -54,7 +54,7 @@ public class FiredArrowsSystem extends AbstractListener {
     }
 
     @EventHandler
-    public void firedArrowByCampFire(PlayerInteractEvent event){
+    public void firedArrowByCampFire(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
         if (event.getClickedBlock() == null) return;
         if (!event.getClickedBlock().getType().equals(Material.CAMPFIRE)) return;
@@ -65,7 +65,7 @@ public class FiredArrowsSystem extends AbstractListener {
         ItemStack arrow = null;
         PlayerInventory inventory = event.getPlayer().getInventory();
 
-        if (itemInMainHand.getAmount() == 1){
+        if (itemInMainHand.getAmount() == 1) {
             arrow = itemInMainHand;
         } else {
             System.out.println(inventory.getStorageContents().length);
@@ -73,11 +73,11 @@ public class FiredArrowsSystem extends AbstractListener {
                 ItemStack itemStack = inventory.getStorageContents()[i];
 
                 //inventory.getItem(i)
-                if (itemStack == null){
+                if (itemStack == null) {
                     //arrow = itemStack;
-                    inventory.setItem(i,new ItemStack(Material.ARROW,1));
+                    inventory.setItem(i, new ItemStack(Material.ARROW, 1));
                     arrow = inventory.getItem(i);
-                    itemInMainHand.setAmount(itemInMainHand.getAmount()-1);
+                    itemInMainHand.setAmount(itemInMainHand.getAmount() - 1);
                     break;
                 }
             }
@@ -85,20 +85,20 @@ public class FiredArrowsSystem extends AbstractListener {
 
         if (arrow == null) {
             // TODO: 12.06.2023 refactor to Component
-            ((Player) event.getPlayer()).sendActionBar(ChatColor.RED + "У вас нет места в инвенторе для горящей стрелы");
+            event.getPlayer().sendActionBar(ChatColor.RED + "У вас нет места в инвенторе для горящей стрелы");
             return;
         }
 
         ItemMeta meta = arrow.getItemMeta();
-        if ( meta.getLore() != null ) {
+        if (meta.getLore() != null) {
             return;
         }
         // TODO: 12.06.2023 refactor to Component
         List<String> loreList = new ArrayList<String>();
         loreList.add(ChatColor.GOLD + "special"); //This is the first line of lore
         loreList.add(ChatColor.RED + "fired"); //This is the second line of lore
-        String date = System.currentTimeMillis() + "";
-        loreList.add(ChatColor.AQUA  + date);
+        String date = String.valueOf(System.currentTimeMillis());
+        loreList.add(ChatColor.AQUA + date);
         meta.setLore(loreList);
         arrow.setItemMeta(meta);
     }

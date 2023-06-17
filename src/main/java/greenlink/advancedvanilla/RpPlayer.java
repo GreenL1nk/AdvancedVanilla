@@ -4,12 +4,12 @@ import greenlink.advancedvanilla.professions.ProfessionBase;
 import greenlink.advancedvanilla.professions.ProfessionManager;
 import greenlink.advancedvanilla.professions.Professions;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class RpPlayer {
     private final UUID uuid;
     private ProfessionBase profession;
-    private ProfessionBase old_profession;
     private int money;
     private int pocketMoney;
     private int bankMoney;
@@ -19,7 +19,6 @@ public class RpPlayer {
     public RpPlayer(UUID uuid) {
         this.uuid = uuid;
         this.profession = null;
-        this.old_profession = null;
         money = 100;
         pocketMoney = 100;
         this.oldProfession = null;
@@ -28,7 +27,6 @@ public class RpPlayer {
     public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession) {
         this.uuid = uuid;
         this.profession = profession;
-        this.old_profession = old_profession;
         money = 100;
         pocketMoney = 100;
         this.oldProfession = oldProfession;
@@ -38,6 +36,7 @@ public class RpPlayer {
         return uuid;
     }
 
+    @Nullable
     public ProfessionBase getProfession() {
         return profession;
     }
@@ -49,7 +48,9 @@ public class RpPlayer {
         if (professionNextChangeTime != 0 && professionNextChangeTime < currentTime) return false;
 //        professionChangeTime = currentTime + 43200000L; //12ч
         professionNextChangeTime = currentTime + 60000;
+        if (this.profession != null) setOldProfession(profession);
         this.profession = profession;
+        this.profession.setRpPlayer(this);
         return true;
     }
 
@@ -73,20 +74,20 @@ public class RpPlayer {
         return bankMoney;
     }
 
-    public boolean takeMoney(int takenMoney){
-        if ( this.getMoney() + this.getPocketMoney() - takenMoney < 0 ) return false;
+    public boolean takeMoney(int takenMoney) {
+        if (this.getMoney() + this.getPocketMoney() - takenMoney < 0) return false;
 
         int temp = Math.min(this.getMoney(), takenMoney);
         this.removeMoney(temp);
-        removePocketMoney(takenMoney-temp);
+        removePocketMoney(takenMoney - temp);
         return true;
     }
 
-    private void removeMoney(int money){
+    private void removeMoney(int money) {
         this.money -= money;
     }
 
-    private void removePocketMoney(int money){
+    private void removePocketMoney(int money) {
         this.pocketMoney -= money;
     }
 }

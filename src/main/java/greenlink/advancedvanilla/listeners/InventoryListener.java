@@ -39,7 +39,7 @@ public class InventoryListener extends AbstractListener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
-        if (event.getInventory().getHolder() instanceof AbstractInventoryHolder) {
+        if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof AbstractInventoryHolder) {
             ((AbstractInventoryHolder) event.getInventory().getHolder()).close(event);
         }
     }

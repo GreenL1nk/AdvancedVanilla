@@ -38,7 +38,7 @@ public class TradingItem extends MyObservable {
         this.timeAmplitude = timeAmplitude;
 
         nowTradeLevel = 0;
-        leftForLevelChange = amplitudes[0];
+        leftForLevelChange = 0;
     }
 
     /**
@@ -51,56 +51,60 @@ public class TradingItem extends MyObservable {
     public boolean tryBuyitem(Player player, boolean singleItem){
         if (!canBuy) return false;
 
-        if (singleItem)
-        {
-            if ( !PlayerManager.getInstance().getPlayer(player.getUniqueId()).takeMoney(getNowBuyPrice()) ) return false;
-            leftForLevelChange--;
-            if (leftForLevelChange == 0) {
-                lastPriceChange = System.currentTimeMillis();
-                int temp = nowTradeLevel;
-                if ( temp < 0 ) temp *=-1;
-                if (temp != 3) {
-                    nowTradeLevel--;
-                }
-                leftForLevelChange = amplitudes[Math.abs(nowTradeLevel)];
-            }
-            HashMap<Integer, ItemStack> items = player.getInventory().addItem(new ItemStack(this.material, this.count));
-            Location location = player.getLocation();
-            Set<Map.Entry<Integer, ItemStack>> entries = items.entrySet();
-            int dropingItems = 0;
-            for (Map.Entry<Integer, ItemStack> entry : entries) {
-                dropingItems = entry.getKey();
-            }
-            if (dropingItems != 0) location.getWorld().dropItemNaturally(location, new ItemStack(this.material, dropingItems));
-        }
-        else {
-            int countOfBuyingItems = Math.min(64, leftForLevelChange);
-            if ( !PlayerManager.getInstance().getPlayer(player.getUniqueId()).takeMoney(getNowBuyPrice()*countOfBuyingItems) ) return false;
-            leftForLevelChange-=countOfBuyingItems;
+        int countOfBuyingItems = 1;
 
-            if (leftForLevelChange == 0) {
-                lastPriceChange = System.currentTimeMillis();
-                int temp = nowTradeLevel;
-                if ( temp < 0 ) temp *=-1;
-                if (temp != 3) {
-                    nowTradeLevel--;
-                }
-                leftForLevelChange = amplitudes[Math.abs(nowTradeLevel)];
+        if (!singleItem) countOfBuyingItems = Math.min(64, amplitudes[Math.abs(nowTradeLevel)]-leftForLevelChange );
+        if ( !PlayerManager.getInstance().getPlayer(player.getUniqueId()).takeMoney(getNowBuyPrice()*countOfBuyingItems) ) return false;
+        leftForLevelChange+=countOfBuyingItems;
+
+        if ( Math.abs(leftForLevelChange) == amplitudes[Math.abs(nowTradeLevel)]) {
+            lastPriceChange = System.currentTimeMillis();
+            if ( nowTradeLevel < 3)  {
+                nowTradeLevel++;
             }
-            HashMap<Integer, ItemStack> items = player.getInventory().addItem(new ItemStack(this.material, this.count*countOfBuyingItems));
-            Location location = player.getLocation();
-            Set<Map.Entry<Integer, ItemStack>> entries = items.entrySet();
-            int dropingItems = 0;
-            for (Map.Entry<Integer, ItemStack> entry : entries) {
-                dropingItems = entry.getKey();
-            }
-            if (dropingItems != 0) location.getWorld().dropItemNaturally(location, new ItemStack(this.material, dropingItems));
+            leftForLevelChange = 0;
         }
+
+        HashMap<Integer, ItemStack> items = player.getInventory().addItem(new ItemStack(this.material, this.count*countOfBuyingItems));
+        Location location = player.getLocation();
+        Set<Map.Entry<Integer, ItemStack>> entries = items.entrySet();
+        int dropingItems = 0;
+        for (Map.Entry<Integer, ItemStack> entry : entries) {
+            dropingItems = entry.getKey();
+        }
+        if (dropingItems != 0) location.getWorld().dropItemNaturally(location, new ItemStack(this.material, dropingItems));
+        notifyObservers();
+        return true;
+    }
+
+    public boolean trySellItem(Player player, boolean singleItem){
+        if (!canSell) return false;
+
+        int countOfBuyingItems = 1;
+
+        if (!singleItem) countOfBuyingItems = Math.min(64, amplitudes[Math.abs(nowTradeLevel)]+leftForLevelChange );
+        if ( !player.getInventory().contains(this.material, countOfBuyingItems * count)) return false;
+        leftForLevelChange-=countOfBuyingItems;
+
+        PlayerManager.getInstance().getPlayer(player.getUniqueId()).addMoney(countOfBuyingItems * this.getNowBuyPrice());
+        player.getInventory().removeItem(new ItemStack(this.material, countOfBuyingItems * count));
+
+        if ( Math.abs(leftForLevelChange) == amplitudes[Math.abs(nowTradeLevel)]) {
+            lastPriceChange = System.currentTimeMillis();
+            if ( nowTradeLevel > -3)  {
+                nowTradeLevel--;
+            }
+            leftForLevelChange = 0;
+        }
+
+
+
+        notifyObservers();
         return true;
     }
 
     public int getNowBuyPrice(){
-        return basePrice * ((100 + 15*(nowTradeLevel))/10)/10;
+        return basePrice * ((100 + 15*( (-1)* nowTradeLevel ))/10)/10;
     }
 
     public boolean timeCheck(){
@@ -110,7 +114,7 @@ public class TradingItem extends MyObservable {
             } else {
                 nowTradeLevel--;
             }
-            leftForLevelChange = amplitudes[Math.abs(nowTradeLevel)];
+            leftForLevelChange = 0;
             lastPriceChange = System.currentTimeMillis();
             this.notifyObservers();
             return true;

@@ -90,4 +90,8 @@ public class RpPlayer {
     private void removePocketMoney(int money) {
         this.pocketMoney -= money;
     }
+
+    public void addMoney(int money){
+        this.money+=money;
+    }
 }

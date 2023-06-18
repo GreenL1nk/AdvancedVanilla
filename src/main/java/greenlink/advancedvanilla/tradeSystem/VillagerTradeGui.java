@@ -59,20 +59,13 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
 //            Bukkit.broadcast(Component.text("test2 "));
             slot-=20;
             slot = (slot/9 * 5) + slot % 9;
-            //Bukkit.broadcast( ((TextComponent)Component.text(slot)) );
+
             if (this.items.length-1 <= slot) {
-
-                if ( event.isLeftClick() && items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {
-                    ArrayList<VillagerTradeGui> guisList = guis.get(profession);
-                    for (VillagerTradeGui gui : guisList) {
-                        gui.updateDisplayItem(slot);
-                    }
-                }
+                if ( event.isLeftClick() && items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {  }
+                if ( event.isRightClick() && items[slot].trySellItem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {  }
             }
-
-            //Bukkit.broadcast(Component.text("test3 "));
         }
-        //Bukkit.broadcast(Component.text("test4 "));
+
         event.setCancelled(true);
     }
 

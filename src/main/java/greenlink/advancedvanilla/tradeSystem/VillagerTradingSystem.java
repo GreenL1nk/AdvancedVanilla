@@ -1,6 +1,8 @@
 package greenlink.advancedvanilla.tradeSystem;
 
+import com.google.gson.reflect.TypeToken;
 import greenlink.advancedvanilla.AdvancedVanilla;
+import greenlink.advancedvanilla.json.Json;
 import lib.utils.AbstractListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -18,7 +20,15 @@ import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class VillagerTradingSystem extends AbstractListener {
 
@@ -29,8 +39,32 @@ public class VillagerTradingSystem extends AbstractListener {
         /*
         todo loading from config
          */
-        {
-            TradingItem tradingItem = new TradingItem(Material.IRON_INGOT, 1, 10, new int[]{10, 20, 30, 40}, true, false, new long[]{ 15000,20000,20000,20000});
+        HashMap<Villager.Profession, TradingItem[]> itemsMap = null;
+        try {
+            String result;
+            Path path = plugin.getDataFolder().toPath().resolve("tradingItems.json");
+            if (Files.exists(path)) {
+                String jsonStr = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+
+                Type type = new TypeToken< Map<Villager.Profession, TradingItem[]> >() {
+                }.getType();
+                Map<Villager.Profession, TradingItem[]> fromFile = Json.GSON.fromJson(jsonStr, type);
+                if (fromFile == null) itemsMap = null;
+                else {
+                    itemsMap = new HashMap<>(fromFile);
+                    tradingItems = itemsMap;
+                }
+
+            } else {
+                Bukkit.getLogger().info("tradingItems.json is NULL.");
+                itemsMap = null;
+            }
+        } catch (Exception e){
+            itemsMap = null;
+        }
+
+        if (itemsMap == null) {
+            TradingItem tradingItem = new TradingItem(Material.IRON_INGOT, 1, 10, new int[]{10, 20, 30, 40}, true, true, new long[]{ 15000,20000,20000,20000});
             tradingItems = new HashMap<>();
             TradingItem[] items = {tradingItem};
             tradingItems.put(Villager.Profession.TOOLSMITH, items);
@@ -40,6 +74,21 @@ public class VillagerTradingSystem extends AbstractListener {
                 }
                 }, 0,20);
         }
+
+//        try {
+//            Path path = plugin.getDataFolder().toPath();
+//            if (Files.notExists(path)) Files.createDirectories(path);
+//
+//            Path playerDataFile = path.resolve("quentas.json");
+//            final ArrayList<String> lines = new ArrayList<>();
+//            lines.add(Json.toJson(tradingItems));
+//
+//            Files.write(playerDataFile, lines, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+//
+//        } catch (Exception e){
+//
+//        }
+
     }
     @EventHandler
     public void onVillagerOpen(PlayerInteractAtEntityEvent event){

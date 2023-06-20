@@ -19,6 +19,18 @@ import org.jetbrains.annotations.NotNull;
 public class TestListener extends AbstractListener implements MyObserver {
     public TestListener(@NotNull JavaPlugin plugin) {
         super(plugin);
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(player.getUniqueId());
+            Scoreboard playerScoreBoard = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
+            player.setScoreboard(playerScoreBoard);
+            Objective objective = playerScoreBoard.registerNewObjective("Money", Criteria.DUMMY, Component.text(player.getName()).color(TextColor.color(972270)));
+            objective.setDisplaySlot( DisplaySlot.SIDEBAR );
+            Score moneyScore = objective.getScore("Money: ");
+            moneyScore.setScore(rpPlayer.getMoney());
+            Score pocketMoneyScore = objective.getScore("Pocket Money: ");
+            pocketMoneyScore.setScore(rpPlayer.getPocketMoney());
+            rpPlayer.addObserver(this);
+        }
     }
 
     @Override

@@ -9,8 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdvancedVanilla extends JavaPlugin {
 
-    public static final String HEMOK98_BUILD_NUMBER = "50";
+    public static final String HEMOK98_BUILD_NUMBER = "60";
     public static final String GREENLINK_BUILD_NUMBER = "50";
+    public static final String VERSION_NUMBER = "0.1.23";
     private static AdvancedVanilla instance;
 
     @Override

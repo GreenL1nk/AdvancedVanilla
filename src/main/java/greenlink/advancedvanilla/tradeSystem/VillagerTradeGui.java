@@ -59,10 +59,10 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
 //            Bukkit.broadcast(Component.text("test2 "));
             slot-=20;
             slot = (slot/9 * 5) + slot % 9;
-
-            if (this.items.length-1 <= slot) {
-                if ( event.isLeftClick() && items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {  }
-                if ( event.isRightClick() && items[slot].trySellItem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {  }
+            //System.out.println(slot + " " + this.items.length);
+            if (slot < this.items.length) {
+                if ( event.isLeftClick() && items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) { System.out.println("true1"); }
+                if ( event.isRightClick() && items[slot].trySellItem(((Player) event.getWhoClicked()), !event.isShiftClick() )) { System.out.println("true1"); }
             }
         }
 
@@ -122,8 +122,19 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
                     append(Component.text(items[index].getNowBuyPrice()-1).color(TextColor.color(9290582))) );
         }
 
-        lore.add( Component.text("Лимит скупки: ").color(TextColor.color(972270)).
-                append(Component.text(items[index].getLeftForLevelChange()).color(TextColor.color(9290582))) );
+        TextComponent color = Component.text("Лимит скупки: ").color(TextColor.color(972270));
+        int leftForLevelChange = items[index].getLeftForLevelChange();
+        if (leftForLevelChange > 0){
+            color = color.append(Component.text("▲").color(TextColor.color(11278368)));
+        }
+        if (leftForLevelChange < 0) {
+            color = color.append(Component.text("▼").color(TextColor.color(11278368)));
+            leftForLevelChange*=-1;
+        }
+
+
+        color = color.append(Component.text(leftForLevelChange).color(TextColor.color(9290582)));
+        lore.add(color);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 

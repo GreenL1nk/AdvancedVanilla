@@ -3,11 +3,12 @@ package greenlink.advancedvanilla;
 import greenlink.advancedvanilla.professions.ProfessionBase;
 import greenlink.advancedvanilla.professions.ProfessionManager;
 import greenlink.advancedvanilla.professions.Professions;
+import lib.utils.MyObservable;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class RpPlayer {
+public class RpPlayer extends MyObservable {
     private final UUID uuid;
     private ProfessionBase profession;
     private int money;
@@ -80,18 +81,22 @@ public class RpPlayer {
         int temp = Math.min(this.getMoney(), takenMoney);
         this.removeMoney(temp);
         removePocketMoney(takenMoney - temp);
+        notifyObservers();
         return true;
     }
 
     private void removeMoney(int money) {
         this.money -= money;
+        notifyObservers();
     }
 
     private void removePocketMoney(int money) {
         this.pocketMoney -= money;
+        notifyObservers();
     }
 
     public void addMoney(int money){
         this.money+=money;
+        notifyObservers();
     }
 }

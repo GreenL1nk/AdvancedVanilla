@@ -49,12 +49,16 @@ public class TradingItem extends MyObservable {
 
 
     public boolean tryBuyitem(Player player, boolean singleItem){
+        //System.out.println(this.material + " " + canBuy);
         if (!canBuy) return false;
-
+        int test = 0;
+        //System.out.println("tgg" + ++test);
         int countOfBuyingItems = 1;
 
         if (!singleItem) countOfBuyingItems = Math.min(64, amplitudes[Math.abs(nowTradeLevel)]-leftForLevelChange );
+        //System.out.println("tgg" + ++test);
         if ( !PlayerManager.getInstance().getPlayer(player.getUniqueId()).takeMoney(getNowBuyPrice()*countOfBuyingItems) ) return false;
+        //System.out.println("tgg" + ++test);
         leftForLevelChange+=countOfBuyingItems;
 
         if ( Math.abs(leftForLevelChange) == amplitudes[Math.abs(nowTradeLevel)]) {
@@ -86,7 +90,7 @@ public class TradingItem extends MyObservable {
         if ( !player.getInventory().contains(this.material, countOfBuyingItems * count)) return false;
         leftForLevelChange-=countOfBuyingItems;
 
-        PlayerManager.getInstance().getPlayer(player.getUniqueId()).addMoney(countOfBuyingItems * this.getNowBuyPrice());
+        PlayerManager.getInstance().getPlayer(player.getUniqueId()).addMoney(countOfBuyingItems * (this.getNowBuyPrice()-1));
         player.getInventory().removeItem(new ItemStack(this.material, countOfBuyingItems * count));
 
         if ( Math.abs(leftForLevelChange) == amplitudes[Math.abs(nowTradeLevel)]) {

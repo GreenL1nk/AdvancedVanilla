@@ -97,8 +97,9 @@ public class VillagerTradingSystem extends AbstractListener {
             event.setCancelled(true);
             Villager.Profession profession = ((Villager) event.getRightClicked()).getProfession();
             profession = Villager.Profession.TOOLSMITH;
-            Component component = ((TextComponent)Component.text("Test").color(TextColor.color(2773694)));
-            VillagerTradeGui.display(component, event.getPlayer(), tradingItems.get(profession), profession);
+            Component component = ((TextComponent)Component.text(profession.toString()).color(TextColor.color(2773694)));
+            TradingItem[] items = tradingItems.get(profession);
+            if (items != null) VillagerTradeGui.display(component, event.getPlayer(), items, profession);
         }
 
     }

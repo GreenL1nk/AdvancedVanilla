@@ -12,7 +12,7 @@ public final class AdvancedVanilla extends JavaPlugin {
 
     public static final String HEMOK98_BUILD_NUMBER = "69";
     public static final String GREENLINK_BUILD_NUMBER = "50";
-    public static final String VERSION_NUMBER = "0.1.23";
+    public static final String VERSION_NUMBER = "0.1.24";
     private static AdvancedVanilla instance;
 
     @Override

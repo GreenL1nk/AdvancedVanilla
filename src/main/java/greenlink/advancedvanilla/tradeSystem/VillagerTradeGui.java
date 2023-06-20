@@ -7,6 +7,7 @@ import lib.utils.MyObserver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -61,8 +62,8 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
             slot = (slot/9 * 5) + slot % 9;
             //System.out.println(slot + " " + this.items.length);
             if (slot < this.items.length) {
-                if ( event.isLeftClick() && items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) { System.out.println("true1"); }
-                if ( event.isRightClick() && items[slot].trySellItem(((Player) event.getWhoClicked()), !event.isShiftClick() )) { System.out.println("true1"); }
+                if ( event.isLeftClick() && items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {  }
+                if ( event.isRightClick() && items[slot].trySellItem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {  }
             }
         }
 
@@ -109,17 +110,17 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
         ArrayList<Component> lore = new ArrayList<>();
         lore.add(Component.text(" "));
         lore.add(Component.text("Колличество: ").color(TextColor.color(972270)).
-                append(Component.text(items[index].getNowBuyPrice()).color(TextColor.color(9290582))));
+                append(Component.text(items[index].getNowBuyPrice()).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false));
         lore.add(Component.text(" "));
 
         if (items[index].isCanBuy()) {
             lore.add( Component.text("Покупка: ").color(TextColor.color(972270)).
-                    append(Component.text(items[index].getNowBuyPrice()).color(TextColor.color(9290582))) );
+                    append(Component.text(items[index].getNowBuyPrice()).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false) );
         }
 
         if (items[index].isCanSell()) {
             lore.add( Component.text("Продажа: ").color(TextColor.color(972270)).
-                    append(Component.text(items[index].getNowBuyPrice()-1).color(TextColor.color(9290582))) );
+                    append(Component.text(items[index].getNowBuyPrice()-1).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false) );
         }
 
         TextComponent color = Component.text("Лимит скупки: ").color(TextColor.color(972270));
@@ -133,7 +134,7 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
         }
 
 
-        color = color.append(Component.text(leftForLevelChange).color(TextColor.color(9290582)));
+        color = color.append(Component.text(leftForLevelChange).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false);
         lore.add(color);
 
         ItemMeta itemMeta = itemStack.getItemMeta();

@@ -2,14 +2,20 @@ package greenlink.advancedvanilla.professions;
 
 import greenlink.advancedvanilla.AdvancedVanilla;
 import greenlink.advancedvanilla.PlayerManager;
+import greenlink.advancedvanilla.ProfileGui;
 import greenlink.advancedvanilla.RpPlayer;
 import lib.utils.AbstractInventoryHolder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 
@@ -30,6 +36,16 @@ public class ProfessionSelectGUI extends AbstractInventoryHolder {
             indexProfessions.put(index, profession);
             index++;
         }
+
+        {
+            ItemStack itemStack = new ItemStack(Material.OAK_DOOR);
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            if (itemMeta != null) {
+                itemMeta.displayName(Component.text("Назад").color(TextColor.color(5889190)).decoration(TextDecoration.ITALIC, false) );
+                itemStack.setItemMeta(itemMeta);
+            }
+            this.inventory.setItem(53, itemStack);
+        }
     }
 
     @Override
@@ -39,6 +55,10 @@ public class ProfessionSelectGUI extends AbstractInventoryHolder {
         if (indexProfessions.containsKey(rawSlot)) {
             if (rpPlayer.getProfession() == null) rpPlayer.setProfession(indexProfessions.get(rawSlot));
             ProfessionsGUI.display(requester, rpPlayer);
+        }
+
+        if (rawSlot == 53 ) {
+            ProfileGui.display(((Player) event.getWhoClicked()));
         }
     }
 

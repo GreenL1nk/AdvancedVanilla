@@ -1,5 +1,6 @@
 package greenlink.advancedvanilla.professions.requirements;
 
+import greenlink.advancedvanilla.RpPlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -11,15 +12,36 @@ import java.util.ArrayList;
 
 public class ItemRequirement extends Requirement {
     private final ItemStack itemStack;
-    private int currentProgress;
 
     public ItemRequirement(ItemStack itemStack) {
         this.itemStack = itemStack;
-        this.currentProgress = 0;
+        this.requiredAmount = itemStack.getAmount();
     }
 
     public ItemStack getItemStack() {
         return itemStack;
+    }
+
+    /***
+     * Does not consider stack size
+     * @param arg compare item
+     * @return true if the required item, ignoring the amount
+     */
+    @Override
+    public boolean isRequirement(Object arg, RpPlayer rpPlayer) {
+        if (arg instanceof ItemStack) {
+            if (((ItemStack) arg).isSimilar(itemStack)) {
+                incrementCurrentProgress(rpPlayer);
+                return true;
+            }
+        }
+        if (arg instanceof Material) {
+            if (arg.equals(itemStack.getType())) {
+                incrementCurrentProgress(rpPlayer);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -37,43 +59,9 @@ public class ItemRequirement extends Requirement {
     public ItemStack getDisplayItem() {
         ItemStack displayItem = itemStack.clone();
         int leftAmount = itemStack.getAmount() - currentProgress;
-        displayItem.setAmount(Math.min(leftAmount, displayItem.getMaxStackSize()));
+        if (leftAmount == 0) displayItem.setAmount(1);
+        else displayItem.setAmount(Math.min(leftAmount, displayItem.getMaxStackSize()));
         displayItem.lore(loreComponents());
         return displayItem;
-    }
-
-    /***
-     * Does not consider stack size
-     * @param checkItem
-     * @return true if the required item, ignoring the amount
-     */
-    public boolean isRequirement(ItemStack checkItem) {
-        if (checkItem.isSimilar(itemStack)) {
-            incrementCurrentProgress();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isRequirement(Material material) {
-        if (material.equals(itemStack.getType())) {
-            incrementCurrentProgress();
-            return true;
-        }
-        return false;
-    }
-
-    public int getCurrentProgress() {
-        return currentProgress;
-    }
-
-    private void incrementCurrentProgress() {
-        if (currentProgress < itemStack.getAmount()) {
-            this.currentProgress++;
-        }
-    }
-
-    public void setCurrentProgress(int currentProgress) {
-        this.currentProgress = currentProgress;
     }
 }

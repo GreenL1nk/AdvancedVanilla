@@ -2,7 +2,6 @@ package greenlink.advancedvanilla.listeners;
 
 import lib.utils.AbstractInventoryHolder;
 import lib.utils.AbstractListener;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;

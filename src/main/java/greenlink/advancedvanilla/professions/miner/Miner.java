@@ -28,8 +28,7 @@ public class Miner extends ProfessionBase {
 
     private void checkToRequirements(Material material) {
         Arrays.stream(getRpPlayer().getProfession().getCurrentRequirements())
-                .filter(requirements -> requirements instanceof ItemRequirement)
-                .forEach(requirements -> ((ItemRequirement) requirements).isRequirement(material));
+                .forEach(requirements -> requirements.isRequirement(material, getRpPlayer()));
     }
 
     private boolean haveSilkTouch(Player player) {

@@ -28,10 +28,16 @@ public class ProfessionManager {
                 return new Miner("Шахтёр",
                         new Level(1,
                                 new ItemStack(Material.IRON_PICKAXE),
-                                new ItemRequirement(new ItemStack(Material.STONE, 1920)),
-                                new ItemRequirement(new ItemStack(Material.IRON_ORE, 256)),
-                                new ItemRequirement(new ItemStack(Material.COAL_ORE, 256))
+                                new ItemRequirement(new ItemStack(Material.STONE, 19)),
+                                new ItemRequirement(new ItemStack(Material.IRON_ORE, 25)),
+                                new ItemRequirement(new ItemStack(Material.COAL_ORE, 25))
                         ),
+//                        new Level(1,
+//                                new ItemStack(Material.IRON_PICKAXE),
+//                                new ItemRequirement(new ItemStack(Material.STONE, 1920)),
+//                                new ItemRequirement(new ItemStack(Material.IRON_ORE, 256)),
+//                                new ItemRequirement(new ItemStack(Material.COAL_ORE, 256))
+//                        ),
                         new Level(2,
                                 new ItemStack(Material.DIAMOND_PICKAXE),
                                 new ItemRequirement(new ItemStack(Material.STONE, 2560)),

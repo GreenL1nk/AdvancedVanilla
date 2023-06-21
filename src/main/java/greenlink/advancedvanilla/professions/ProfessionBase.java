@@ -3,12 +3,14 @@ package greenlink.advancedvanilla.professions;
 
 import greenlink.advancedvanilla.RpPlayer;
 import greenlink.advancedvanilla.professions.requirements.Requirement;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class ProfessionBase implements Listener {
     private final String name;
-    private int currentLevel;
+    private int numberCurrentLevel;
     private final Level[] levels;
     private RpPlayer rpPlayer;
 
@@ -22,21 +24,32 @@ public abstract class ProfessionBase implements Listener {
         return name;
     }
 
-    public int getCurrentLevel() {
-        return currentLevel;
+    public int getNumberCurrentLevel() {
+        return numberCurrentLevel;
     }
 
-    public void setCurrentLevel(int currentLevel) {
-        this.currentLevel = currentLevel;
+    public void setNumberCurrentLevel(int numberCurrentLevel) {
+        this.numberCurrentLevel = numberCurrentLevel;
     }
 
     public Level[] getLevels() {
         return levels;
     }
 
+    public Level getCurrentLevel() {
+        return levels[numberCurrentLevel];
+    }
+
+    public void levelUP() {
+        this.numberCurrentLevel++;
+        getRpPlayer().getPlayer().sendMessage(Component
+                .text("Ваш уровень профессии был повышен до ", NamedTextColor.GRAY)
+                .append(Component.text(numberCurrentLevel, NamedTextColor.GREEN)));
+    }
+
     public Requirement[] getCurrentRequirements() {
-        if (levels.length < currentLevel) return new Requirement[0];
-        return levels[currentLevel].requirements();
+        if (levels.length < numberCurrentLevel) return new Requirement[0];
+        return levels[numberCurrentLevel].requirements();
     }
 
     @Nullable

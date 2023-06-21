@@ -26,7 +26,6 @@ public class Fisherman extends ProfessionBase {
 
     private void checkToRequirements(ItemStack itemStack) {
         Arrays.stream(getRpPlayer().getProfession().getCurrentRequirements())
-                .filter(requirements -> requirements instanceof ItemRequirement)
-                .forEach(requirements -> ((ItemRequirement) requirements).isRequirement(itemStack));
+                .forEach(requirements -> requirements.isRequirement(itemStack, getRpPlayer()));
     }
 }

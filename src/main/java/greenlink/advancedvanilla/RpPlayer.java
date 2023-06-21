@@ -5,6 +5,8 @@ import greenlink.advancedvanilla.professions.ProfessionBase;
 import greenlink.advancedvanilla.professions.ProfessionManager;
 import greenlink.advancedvanilla.professions.Professions;
 import lib.utils.MyObservable;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -17,6 +19,7 @@ public class RpPlayer extends MyObservable {
     private int bankMoney;
     private ProfessionBase oldProfession;
     private long professionNextChangeTime;
+    Player player;
     private Compass[] compasses;
     private int activeCompass;
 
@@ -104,6 +107,11 @@ public class RpPlayer extends MyObservable {
     public void addMoney(int money){
         this.money+=money;
         notifyObservers();
+    }
+
+    public Player getPlayer() {
+        if (player == null) player = Bukkit.getPlayer(uuid);
+        return player;
     }
 
     public Compass[] getCompasses() {

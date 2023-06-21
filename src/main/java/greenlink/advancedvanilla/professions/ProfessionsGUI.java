@@ -52,7 +52,7 @@ public class ProfessionsGUI extends AbstractInventoryHolder {
     private void setRequirements() {
         int levelIndex = 9;
         for (Level level : professionBase.getLevels()) {
-            this.inventory.setItem(levelIndex, level.getDisplayItem());
+            this.inventory.setItem(levelIndex, level.displayItem());
             int requirementIndex = 1;
             for (Requirement requirement : level.requirements()) {
                 this.inventory.setItem(requirementIndex + levelIndex, requirement.getDisplayItem());

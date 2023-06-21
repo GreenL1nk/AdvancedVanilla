@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class ProfileGui extends AbstractInventoryHolder {
     private static Component title = Component.text( "              Основное" ).color(TextColor.color(2773694));
-    public ProfileGui(Player requester) {
+    private ProfileGui(Player requester) {
         super(title, 5, requester);
 
         {
@@ -122,12 +122,6 @@ public class ProfileGui extends AbstractInventoryHolder {
     }
 
     public static void display(Player player){
-//        VillagerTradeGui openingGui = new VillagerTradeGui(title, player, items);
-//        ArrayList<VillagerTradeGui> guisList = guis.get(profession);
-//        if (guisList == null) guisList = new ArrayList<>();
-//        guisList.add(openingGui);
-//        guis.put( profession, guisList );
-//        openingGui.profession = profession;
         ProfileGui profileGui = new ProfileGui(player);
         Bukkit.getServer().getScheduler().runTaskLater(AdvancedVanilla.getInstance(),()->{ profileGui.open(); }, 1);
     }

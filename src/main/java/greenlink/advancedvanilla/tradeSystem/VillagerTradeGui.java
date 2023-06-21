@@ -28,7 +28,7 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
     private TradingItem[] items;
     private Villager.Profession profession;
     private static HashMap< Villager.Profession, ArrayList<VillagerTradeGui> > guis = new HashMap<>();
-    public VillagerTradeGui(Component title, Player requester, TradingItem[]  items) {
+    private VillagerTradeGui(Component title, Player requester, TradingItem[]  items) {
         super(title, 6, requester);
         this.items = items;
         for (TradingItem item : items) {

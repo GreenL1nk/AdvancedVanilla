@@ -1,5 +1,6 @@
 package greenlink.advancedvanilla;
 
+import greenlink.advancedvanilla.compasSystem.Compass;
 import greenlink.advancedvanilla.professions.ProfessionBase;
 import greenlink.advancedvanilla.professions.ProfessionManager;
 import greenlink.advancedvanilla.professions.Professions;
@@ -16,6 +17,8 @@ public class RpPlayer extends MyObservable {
     private int bankMoney;
     private ProfessionBase oldProfession;
     private long professionNextChangeTime;
+    private Compass[] compasses;
+    private int activeCompass;
 
     public RpPlayer(UUID uuid) {
         this.uuid = uuid;
@@ -23,6 +26,8 @@ public class RpPlayer extends MyObservable {
         money = 100;
         pocketMoney = 100;
         this.oldProfession = null;
+        compasses = new Compass[3];
+        activeCompass = -1;
     }
 
     public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession) {
@@ -31,6 +36,7 @@ public class RpPlayer extends MyObservable {
         money = 100;
         pocketMoney = 100;
         this.oldProfession = oldProfession;
+        activeCompass = -1;
     }
 
     public UUID getUuid() {
@@ -98,5 +104,17 @@ public class RpPlayer extends MyObservable {
     public void addMoney(int money){
         this.money+=money;
         notifyObservers();
+    }
+
+    public Compass[] getCompasses() {
+        return compasses;
+    }
+
+    public int getActiveCompass() {
+        return activeCompass;
+    }
+
+    public void setActiveCompass(int activeCompass) {
+        this.activeCompass = activeCompass;
     }
 }

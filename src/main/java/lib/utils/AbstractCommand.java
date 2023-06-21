@@ -29,9 +29,10 @@ public abstract class AbstractCommand implements TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String string, @NotNull String[] strings) {
-        if (commandSender instanceof Player) onPlayerTab(((Player) commandSender), strings);
-        else onConsoleTab(commandSender, strings);
-        return null;
+        List<String> args = null;
+        if (commandSender instanceof Player) args = onPlayerTab(((Player) commandSender), strings);
+        else args =  onConsoleTab(commandSender, strings);
+        return args;
     }
 
     protected abstract void onPlayerCommand(@NotNull Player player, @NotNull String[] args);

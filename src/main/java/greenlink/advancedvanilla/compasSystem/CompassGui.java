@@ -120,6 +120,11 @@ public class CompassGui extends AbstractInventoryHolder {
                 if (event.isRightClick() && event.isShiftClick()) {
                     compasses[index] = null;
                     this.inventory.setItem(20+index*2, getDisplayerCompas(null, index+1, rpPlayer.getActiveCompass() == index ) );
+                    if ( rpPlayer.getActiveCompass() == index ){
+                        CompasListener.endCompass(player);
+                        rpPlayer.setActiveCompass(-1);
+                    }
+
                 }
 
                 if (event.isLeftClick() && event.isShiftClick() ) {

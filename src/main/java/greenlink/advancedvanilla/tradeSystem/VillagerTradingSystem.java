@@ -49,18 +49,22 @@ public class VillagerTradingSystem extends AbstractListener {
                 Type type = new TypeToken< Map<Villager.Profession, TradingItem[]> >() {
                 }.getType();
                 Map<Villager.Profession, TradingItem[]> fromFile = Json.GSON.fromJson(jsonStr, type);
-                if (fromFile == null) itemsMap = null;
+                if (fromFile == null) {
+                    Bukkit.getLogger().info("tradingItems.json is NULL.");
+                    itemsMap = null;
+                }
                 else {
                     itemsMap = new HashMap<>(fromFile);
                     tradingItems = itemsMap;
                 }
 
             } else {
-                Bukkit.getLogger().info("tradingItems.json is NULL.");
+                Bukkit.getLogger().info("tradingItems.json doesn`t exist");
                 itemsMap = null;
             }
         } catch (Exception e){
             itemsMap = null;
+            Bukkit.getLogger().info("tradingItems.json cant load. " + e.toString());
         }
 
         if (itemsMap == null) {

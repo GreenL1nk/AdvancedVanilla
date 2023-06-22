@@ -1,5 +1,6 @@
 package greenlink.advancedvanilla;
 
+import greenlink.advancedvanilla.customrecipes.RecipesMenuGui;
 import greenlink.advancedvanilla.professions.ProfessionSelectGUI;
 import greenlink.advancedvanilla.tradeSystem.TradingItem;
 import greenlink.advancedvanilla.tradeSystem.VillagerTradeGui;
@@ -75,10 +76,10 @@ public class ProfileGui extends AbstractInventoryHolder {
         }
 
         {
-            ItemStack itemStack = new ItemStack(Material.SPYGLASS);
+            ItemStack itemStack = new ItemStack(Material.CRAFTING_TABLE);
             ItemMeta itemMeta = itemStack.getItemMeta();
             if (itemMeta != null) {
-                itemMeta.displayName(Component.text("В разработке...").color(TextColor.color(5889190)).decoration(TextDecoration.ITALIC, false));
+                itemMeta.displayName(Component.text("Крафты").color(TextColor.color(5889190)).decoration(TextDecoration.ITALIC, false));
                 itemStack.setItemMeta(itemMeta);
             }
             this.inventory.setItem(29, itemStack);
@@ -104,10 +105,13 @@ public class ProfileGui extends AbstractInventoryHolder {
     public void click(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        switch (event.getSlot()) {
-            case  14 : { if (event.isLeftClick()) ProfessionSelectGUI.display(((Player) event.getWhoClicked()));
-                } break;
+        Player player = (Player) event.getWhoClicked();
 
+        switch (event.getSlot()) {
+            case  14 : { if (event.isLeftClick()) ProfessionSelectGUI.display(player);
+                } break;
+            case 29 : { if (event.isLeftClick()) RecipesMenuGui.display(player, 0);
+            } break;
         }
     }
 

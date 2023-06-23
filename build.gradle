@@ -1,9 +1,26 @@
+def getGitCommitCount() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-list', '--count', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().toInteger()
+}
+
+def getVersionName() {
+    def commitCount = getGitCommitCount()
+    def versionName = "1.${commitCount}"
+    return versionName
+}
+
+
 plugins {
     id 'java'
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = 'greenlink'
-version = '1.0'
+version getVersionName()
 
 repositories {
     mavenCentral()
@@ -15,12 +32,17 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "jeff-media-public"
+        url = "https://hub.jeff-media.com/nexus/repository/jeff-media-public/"
+    }
 }
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("org.jetbrains:annotations:15.0")
+    implementation("com.jeff_media:CustomBlockData:2.2.0")
 }
 
 def targetJavaVersion = 17
@@ -50,3 +72,8 @@ processResources {
 
 apply from: '../AdvancedVanilla/local.build.gradle'
 compileJava.options.encoding = 'UTF-8'
+
+
+shadowJar {
+    relocate 'com.jeff_media.customblockdata', 'greenlink.customblockdata'
+}

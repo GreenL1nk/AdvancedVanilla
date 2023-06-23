@@ -12,14 +12,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdvancedVanilla extends JavaPlugin {
     public static final String HEMOK98_BUILD_NUMBER = "114";
-    public static final String GREENLINK_BUILD_NUMBER = "57";
-    public static final String VERSION_NUMBER = "0.1.26";
+    public static final String GREENLINK_BUILD_NUMBER = "80";
+    public static String VERSION_NUMBER = "";
     private static AdvancedVanilla instance;
 
     @Override
     public void onEnable() {
 
         instance = this;
+        VERSION_NUMBER = this.getDescription().getVersion();
 
         new InventoryListener(this);
         new VillagerTradingSystem(this);

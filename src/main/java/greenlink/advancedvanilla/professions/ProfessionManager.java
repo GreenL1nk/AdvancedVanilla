@@ -4,6 +4,7 @@ import greenlink.advancedvanilla.professions.fisherman.Fisherman;
 import greenlink.advancedvanilla.professions.miner.Miner;
 import greenlink.advancedvanilla.professions.miner.MinerListener;
 import greenlink.advancedvanilla.professions.requirements.ItemRequirement;
+import greenlink.advancedvanilla.professions.woodcutter.Woodcutter;
 import lib.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProfessionManager {
@@ -24,20 +26,17 @@ public class ProfessionManager {
     @Nullable
     public ProfessionBase getProfession(Professions profession) {
         switch (profession) {
+            case WOODCUTTER -> {
+                return new Woodcutter("Лесоруб");
+            }
             case MINER -> {
                 return new Miner("Шахтёр",
                         new Level(1,
                                 new ItemStack(Material.IRON_PICKAXE),
-                                new ItemRequirement(new ItemStack(Material.STONE, 19)),
-                                new ItemRequirement(new ItemStack(Material.IRON_ORE, 25)),
-                                new ItemRequirement(new ItemStack(Material.COAL_ORE, 25))
+                                new ItemRequirement(new ItemStack(Material.STONE, 1920)),
+                                new ItemRequirement(new ItemStack(Material.IRON_ORE, 256)),
+                                new ItemRequirement(new ItemStack(Material.COAL_ORE, 256))
                         ),
-//                        new Level(1,
-//                                new ItemStack(Material.IRON_PICKAXE),
-//                                new ItemRequirement(new ItemStack(Material.STONE, 1920)),
-//                                new ItemRequirement(new ItemStack(Material.IRON_ORE, 256)),
-//                                new ItemRequirement(new ItemStack(Material.COAL_ORE, 256))
-//                        ),
                         new Level(2,
                                 new ItemStack(Material.DIAMOND_PICKAXE),
                                 new ItemRequirement(new ItemStack(Material.STONE, 2560)),
@@ -82,7 +81,7 @@ public class ProfessionManager {
 
     public static List<Listener> professionListeners() {
         List<Listener> listeners = new ArrayList<>();
-        listeners.add(new MinerListener());
+        Arrays.stream(Professions.values()).forEach(professions -> listeners.add(professions.getProfessionListener()));
         return listeners;
     }
 

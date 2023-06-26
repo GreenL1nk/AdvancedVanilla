@@ -145,5 +145,6 @@ public class TradingItem extends MyObservable {
     public int getLeftForLevelChange() {
         return leftForLevelChange;
     }
+    public int getNowAmplitude() { return amplitudes[nowTradeLevel]; }
 
 }

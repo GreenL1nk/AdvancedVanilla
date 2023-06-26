@@ -8,13 +8,20 @@ import lib.utils.MyObserver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class TestListener extends AbstractListener implements MyObserver {
     public TestListener(@NotNull JavaPlugin plugin) {
@@ -60,6 +67,7 @@ public class TestListener extends AbstractListener implements MyObserver {
         Score pocketMoneyScore = objective.getScore("Pocket Money: ");
         pocketMoneyScore.setScore(rpPlayer.getPocketMoney());
         rpPlayer.addObserver(this);
+
     }
 
     @EventHandler
@@ -67,6 +75,19 @@ public class TestListener extends AbstractListener implements MyObserver {
         Player player = event.getPlayer();
         RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(player.getUniqueId());
         rpPlayer.deleteObserver(this);
+    }
+
+    @EventHandler
+    public void test(PlayerCommandPreprocessEvent event){
+        if (event.getMessage().endsWith("hemok")) {
+            List<Recipe> recipesFor = Bukkit.getRecipesFor(new ItemStack(Material.IRON_INGOT));
+            for (Recipe recipe : recipesFor) {
+                if (recipe instanceof ShapedRecipe)  {
+                    ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
+                    Bukkit.broadcastMessage( shapedRecipe.getGroup() + " " + shapedRecipe.getKey() + " " + shapedRecipe.getCategory() );
+                }
+            }
+        }
     }
 
 }

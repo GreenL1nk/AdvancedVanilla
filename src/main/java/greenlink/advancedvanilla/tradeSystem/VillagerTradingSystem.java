@@ -16,7 +16,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.inventory.BlastingRecipe;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,9 +39,6 @@ public class VillagerTradingSystem extends AbstractListener {
 
     public VillagerTradingSystem(JavaPlugin plugin){
         super(plugin);
-        /*
-        todo loading from config
-         */
         HashMap<Villager.Profession, TradingItem[]> itemsMap = null;
         try {
             String result;
@@ -101,6 +101,7 @@ public class VillagerTradingSystem extends AbstractListener {
             event.setCancelled(true);
             Villager.Profession profession = ((Villager) event.getRightClicked()).getProfession();
             profession = Villager.Profession.TOOLSMITH;
+
             Component component = ((TextComponent)Component.text(profession.toString()).color(TextColor.color(2773694)));
             TradingItem[] items = tradingItems.get(profession);
             if (items != null) VillagerTradeGui.display(component, event.getPlayer(), items, profession);

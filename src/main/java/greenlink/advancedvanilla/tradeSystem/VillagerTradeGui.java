@@ -92,7 +92,6 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
         Bukkit.getServer().getScheduler().runTaskLater(AdvancedVanilla.getInstance(),()->{ openingGui.open(); }, 1);
     }
 
-    // TODO: 13.06.2023 Refactor to observer
     @Override
     public void onUpdate(MyObservable observable) {
         //Bukkit.broadcast(Component.text("enter onUpdate"));
@@ -110,7 +109,7 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
         ArrayList<Component> lore = new ArrayList<>();
         lore.add(Component.text(" "));
         lore.add(Component.text("Колличество: ").color(TextColor.color(972270)).
-                append(Component.text(items[index].getNowBuyPrice()).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false));
+                append(Component.text(items[index].getCount() ).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false));
         lore.add(Component.text(" "));
 
         if (items[index].isCanBuy()) {
@@ -127,11 +126,12 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
         int leftForLevelChange = items[index].getLeftForLevelChange();
         if (leftForLevelChange > 0){
             color = color.append(Component.text("▲").color(TextColor.color(11278368)));
-        }
+            leftForLevelChange = items[index].getNowAmplitude() - leftForLevelChange;
+        } else
         if (leftForLevelChange < 0) {
             color = color.append(Component.text("▼").color(TextColor.color(11278368)));
-            leftForLevelChange*=-1;
-        }
+            leftForLevelChange = items[index].getNowAmplitude() + leftForLevelChange;
+        } else leftForLevelChange = items[index].getNowAmplitude();
 
 
         color = color.append(Component.text(leftForLevelChange).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false);

@@ -8,6 +8,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+
 public abstract class ProfessionBase implements Listener {
     private final String name;
     private int numberCurrentLevel;
@@ -55,6 +57,13 @@ public abstract class ProfessionBase implements Listener {
     @Nullable
     public RpPlayer getRpPlayer() {
         return rpPlayer;
+    }
+
+    public void processRequirements(Object object) {
+        if (rpPlayer != null
+                && rpPlayer.getProfession() != null) {
+            Arrays.stream(rpPlayer.getProfession().getCurrentRequirements()).forEach(requirement -> requirement.isRequirement(object, rpPlayer));
+        }
     }
 
     public void setRpPlayer(RpPlayer rpPlayer) {

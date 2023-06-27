@@ -1,6 +1,7 @@
 package greenlink.advancedvanilla;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -11,8 +12,7 @@ public class PlayerManager {
     private final DatabaseConnector dataBase;
     private PlayerManager(){
 
-        //dataBase = DatabaseConnector.getInstance();
-        dataBase = null;
+        dataBase = DatabaseConnector.getInstance();
     }
 
     public static PlayerManager getInstance(){
@@ -24,11 +24,19 @@ public class PlayerManager {
         RpPlayer rpPlayer = players.get(uuid);
 
         if (rpPlayer == null) {
-            rpPlayer = new RpPlayer(uuid);
-            //rpPlayer = dataBase.getPlayer(uuid);
+            rpPlayer = dataBase.getPlayer(uuid);
             players.put(uuid, rpPlayer);
         }
 
         return rpPlayer;
+    }
+
+    public void saveRpPlayer(UUID uuid) {
+        dataBase.savePlayer(players.get(uuid));
+    }
+
+    @Nullable
+    public RpPlayer getRpPlayerFromDiscordID(long discordID) {
+        return players.values().stream().filter(player -> player.getAuthPlayer().getDiscordID() == discordID).findFirst().orElse(null);
     }
 }

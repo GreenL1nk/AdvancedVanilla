@@ -2,8 +2,6 @@ package greenlink.advancedvanilla;
 
 import greenlink.advancedvanilla.customrecipes.RecipesMenuGui;
 import greenlink.advancedvanilla.professions.ProfessionSelectGUI;
-import greenlink.advancedvanilla.tradeSystem.TradingItem;
-import greenlink.advancedvanilla.tradeSystem.VillagerTradeGui;
 import lib.utils.AbstractInventoryHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -11,7 +9,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;

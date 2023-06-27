@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import greenlink.advancedvanilla.AdvancedVanilla;
 import greenlink.advancedvanilla.ProfileGui;
 import greenlink.advancedvanilla.json.Json;
-import greenlink.advancedvanilla.tradeSystem.TradingItem;
 import lib.utils.AbstractInventoryHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -12,7 +11,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -23,10 +21,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RecipesMenuGui extends AbstractInventoryHolder {
     private static RecipeView[] recipes;

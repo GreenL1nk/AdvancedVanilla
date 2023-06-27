@@ -1,7 +1,6 @@
 package greenlink.advancedvanilla.customrecipes;
 
 import greenlink.advancedvanilla.AdvancedVanilla;
-import greenlink.advancedvanilla.ProfileGui;
 import lib.utils.AbstractInventoryHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;

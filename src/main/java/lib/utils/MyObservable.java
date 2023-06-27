@@ -1,6 +1,5 @@
 package lib.utils;
 
-import java.util.Observer;
 import java.util.Vector;
 
 public class MyObservable {

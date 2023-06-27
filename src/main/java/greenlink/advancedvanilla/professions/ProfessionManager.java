@@ -2,11 +2,8 @@ package greenlink.advancedvanilla.professions;
 
 import greenlink.advancedvanilla.professions.fisherman.Fisherman;
 import greenlink.advancedvanilla.professions.miner.Miner;
-import greenlink.advancedvanilla.professions.miner.MinerListener;
 import greenlink.advancedvanilla.professions.requirements.ItemRequirement;
 import greenlink.advancedvanilla.professions.woodcutter.Woodcutter;
-import lib.utils.Utils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +24,12 @@ public class ProfessionManager {
     public ProfessionBase getProfession(Professions profession) {
         switch (profession) {
             case WOODCUTTER -> {
-                return new Woodcutter("Лесоруб");
+                return new Woodcutter("Лесоруб",
+                        new Level(1, new ItemStack(Material.STONE_AXE),
+                                new ItemRequirement(new ItemStack(Material.OAK_LOG, 10)),
+                                new ItemRequirement(new ItemStack(Material.BIRCH_LOG, 10))
+                        )
+                );
             }
             case MINER -> {
                 return new Miner("Шахтёр",

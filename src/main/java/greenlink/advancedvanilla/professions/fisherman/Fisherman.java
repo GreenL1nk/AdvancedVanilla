@@ -2,7 +2,6 @@ package greenlink.advancedvanilla.professions.fisherman;
 
 import greenlink.advancedvanilla.professions.Level;
 import greenlink.advancedvanilla.professions.ProfessionBase;
-import greenlink.advancedvanilla.professions.requirements.ItemRequirement;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerFishEvent;

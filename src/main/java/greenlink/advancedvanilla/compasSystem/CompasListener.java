@@ -1,6 +1,5 @@
 package greenlink.advancedvanilla.compasSystem;
 
-import greenlink.advancedvanilla.AdvancedVanilla;
 import greenlink.advancedvanilla.PlayerManager;
 import greenlink.advancedvanilla.RpPlayer;
 import lib.utils.AbstractListener;
@@ -8,7 +7,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -24,7 +22,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.UUID;
 

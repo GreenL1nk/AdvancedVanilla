@@ -1,5 +1,6 @@
 package greenlink.advancedvanilla;
 
+import greenlink.advancedvanilla.auth.AuthPlayer;
 import greenlink.advancedvanilla.compasSystem.Compass;
 import greenlink.advancedvanilla.professions.ProfessionBase;
 import greenlink.advancedvanilla.professions.ProfessionManager;
@@ -22,6 +23,7 @@ public class RpPlayer extends MyObservable {
     Player player;
     private Compass[] compasses;
     private int activeCompass;
+    private final AuthPlayer authPlayer;
 
     public RpPlayer(UUID uuid) {
         this.uuid = uuid;
@@ -31,15 +33,18 @@ public class RpPlayer extends MyObservable {
         this.oldProfession = null;
         compasses = new Compass[3];
         activeCompass = -1;
+        authPlayer = new AuthPlayer(this);
     }
 
-    public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession) {
+    public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession, String address, long discordID) {
         this.uuid = uuid;
         this.profession = profession;
         money = 100;
         pocketMoney = 100;
         this.oldProfession = oldProfession;
         activeCompass = -1;
+        this.authPlayer = new AuthPlayer(this, address, discordID);
+        authPlayer.setLinked(true);
     }
 
     public UUID getUuid() {
@@ -56,8 +61,7 @@ public class RpPlayer extends MyObservable {
         long currentTime = System.currentTimeMillis();
         if (profession == null) return false;
         if (professionNextChangeTime != 0 && professionNextChangeTime < currentTime) return false;
-//        professionChangeTime = currentTime + 43200000L; //12ч
-        professionNextChangeTime = currentTime + 60000;
+        professionNextChangeTime = currentTime + 43200000L; //12ч
         if (this.profession != null) setOldProfession(profession);
         this.profession = profession;
         this.profession.setRpPlayer(this);
@@ -109,6 +113,7 @@ public class RpPlayer extends MyObservable {
         notifyObservers();
     }
 
+    @Nullable
     public Player getPlayer() {
         if (player == null) player = Bukkit.getPlayer(uuid);
         return player;
@@ -124,5 +129,9 @@ public class RpPlayer extends MyObservable {
 
     public void setActiveCompass(int activeCompass) {
         this.activeCompass = activeCompass;
+    }
+
+    public AuthPlayer getAuthPlayer() {
+        return authPlayer;
     }
 }

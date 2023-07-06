@@ -1,5 +1,6 @@
-package greenlink.advancedvanilla;
+package greenlink.advancedvanilla.profileGuis;
 
+import greenlink.advancedvanilla.AdvancedVanilla;
 import greenlink.advancedvanilla.customrecipes.RecipesMenuGui;
 import greenlink.advancedvanilla.professions.ProfessionSelectGUI;
 import lib.utils.AbstractInventoryHolder;
@@ -63,7 +64,7 @@ public class ProfileGui extends AbstractInventoryHolder {
         }
 
         {
-            ItemStack itemStack = new ItemStack(Material.REDSTONE);
+            ItemStack itemStack = new ItemStack(Material.COMPARATOR);
             ItemMeta itemMeta = itemStack.getItemMeta();
             if (itemMeta != null) {
                 itemMeta.displayName(Component.text("Настройки").color(TextColor.color(5889190)).decoration(TextDecoration.ITALIC, false));
@@ -108,6 +109,8 @@ public class ProfileGui extends AbstractInventoryHolder {
             case  14 : { if (event.isLeftClick()) ProfessionSelectGUI.display(player);
                 } break;
             case 29 : { if (event.isLeftClick()) RecipesMenuGui.display(player, 0);
+            } break;
+            case 16 : { if (event.isLeftClick()) SettingsGui.display(player);
             } break;
         }
     }

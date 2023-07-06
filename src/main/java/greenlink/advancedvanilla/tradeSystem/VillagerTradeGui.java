@@ -102,6 +102,7 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
     }
 
     private void updateDisplayItem(int index){
+        //System.out.println("index = " + index + " ");
         ItemStack itemStack = new ItemStack(items[index].getMaterial());
         ArrayList<Component> lore = new ArrayList<>();
         lore.add(Component.text(" "));

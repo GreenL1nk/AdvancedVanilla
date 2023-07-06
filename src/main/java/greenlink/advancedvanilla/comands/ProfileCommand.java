@@ -1,6 +1,6 @@
 package greenlink.advancedvanilla.comands;
 
-import greenlink.advancedvanilla.ProfileGui;
+import greenlink.advancedvanilla.profileGuis.ProfileGui;
 import lib.utils.AbstractCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

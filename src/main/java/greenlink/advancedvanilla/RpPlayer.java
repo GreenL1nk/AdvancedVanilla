@@ -24,27 +24,30 @@ public class RpPlayer extends MyObservable {
     private Compass[] compasses;
     private int activeCompass;
     private final AuthPlayer authPlayer;
+    private boolean displaySidebarInfo;
 
     public RpPlayer(UUID uuid) {
         this.uuid = uuid;
         this.profession = null;
-        money = 100;
-        pocketMoney = 100;
+        money = 0;
+        pocketMoney = 0;
         this.oldProfession = null;
         compasses = new Compass[3];
         activeCompass = -1;
         authPlayer = new AuthPlayer(this);
+        this.displaySidebarInfo = false;
     }
 
     public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession, String address, long discordID) {
         this.uuid = uuid;
         this.profession = profession;
-        money = 100;
-        pocketMoney = 100;
+        money = 0;
+        pocketMoney = 0;
         this.oldProfession = oldProfession;
         activeCompass = -1;
         this.authPlayer = new AuthPlayer(this, address, discordID);
         authPlayer.setLinked(true);
+        this.displaySidebarInfo = false;
     }
 
     public UUID getUuid() {
@@ -133,5 +136,17 @@ public class RpPlayer extends MyObservable {
 
     public AuthPlayer getAuthPlayer() {
         return authPlayer;
+    }
+
+    public boolean isDisplaySidebarInfo() {
+        return displaySidebarInfo;
+    }
+
+    public void setDisplaySidebarInfo(boolean displaySidebarInfo) {
+        this.displaySidebarInfo = displaySidebarInfo;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 }

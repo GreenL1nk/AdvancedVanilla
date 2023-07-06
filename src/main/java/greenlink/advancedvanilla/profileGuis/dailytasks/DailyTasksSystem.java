@@ -1,4 +1,4 @@
-package greenlink.advancedvanilla.dailytasks;
+package greenlink.advancedvanilla.profileGuis.dailytasks;
 
 import lib.utils.AbstractListener;
 import org.bukkit.plugin.java.JavaPlugin;

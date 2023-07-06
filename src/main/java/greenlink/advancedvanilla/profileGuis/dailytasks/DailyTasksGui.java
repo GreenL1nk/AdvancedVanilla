@@ -1,15 +1,22 @@
-package greenlink.advancedvanilla.dailytasks;
+package greenlink.advancedvanilla.profileGuis.dailytasks;
 
 import lib.utils.AbstractInventoryHolder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
 public class DailyTasksGui extends AbstractInventoryHolder {
-    public DailyTasksGui(Component title, int lines, Player requester) {
-        super(title, lines, requester);
+    private static Component title = Component.text( "       Ежедневные задания" ).color(TextColor.color(2773694));
+    public DailyTasksGui(Player requester) {
+        super(title, 5, requester);
+
+        for (int i = 0; i < 9; i++) {
+
+        }
+
     }
 
     @Override
@@ -19,7 +26,7 @@ public class DailyTasksGui extends AbstractInventoryHolder {
 
     @Override
     public void click(InventoryClickEvent event) {
-
+        event.setCancelled(true);
     }
 
     @Override
@@ -29,6 +36,6 @@ public class DailyTasksGui extends AbstractInventoryHolder {
 
     @Override
     public void onDrag(InventoryDragEvent event) {
-
+        event.setCancelled(true);
     }
 }

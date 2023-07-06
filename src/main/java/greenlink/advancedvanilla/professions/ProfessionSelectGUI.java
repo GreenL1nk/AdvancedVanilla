@@ -2,7 +2,7 @@ package greenlink.advancedvanilla.professions;
 
 import greenlink.advancedvanilla.AdvancedVanilla;
 import greenlink.advancedvanilla.PlayerManager;
-import greenlink.advancedvanilla.ProfileGui;
+import greenlink.advancedvanilla.profileGuis.ProfileGui;
 import greenlink.advancedvanilla.RpPlayer;
 import lib.utils.AbstractInventoryHolder;
 import net.kyori.adventure.text.Component;

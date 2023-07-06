@@ -92,7 +92,17 @@ public class TradingItem extends MyObservable {
         leftForLevelChange-=countOfBuyingItems;
 
         PlayerManager.getInstance().getPlayer(player.getUniqueId()).addMoney(countOfBuyingItems * (this.getNowBuyPrice()-1));
-        player.getInventory().removeItem(new ItemStack(this.material, countOfBuyingItems * count));
+        countOfBuyingItems*=count;
+        for (ItemStack content : player.getInventory().getContents()) {
+            if (content != null && content.getType() == this.material) {
+                //todo lore check
+                int temp = Math.min( content.getAmount(), countOfBuyingItems );
+                content.setAmount( content.getAmount() - temp );
+                countOfBuyingItems-=temp;
+                if (countOfBuyingItems == 0) break;
+            }
+        }
+        //player.getInventory().removeItem(new ItemStack(this.material, countOfBuyingItems * count));
 
         if ( Math.abs(leftForLevelChange) == amplitudes[Math.abs(nowTradeLevel)]) {
             lastPriceChange = System.currentTimeMillis();
@@ -146,6 +156,8 @@ public class TradingItem extends MyObservable {
     public int getLeftForLevelChange() {
         return leftForLevelChange;
     }
-    public int getNowAmplitude() { return amplitudes[nowTradeLevel]; }
+    public int getNowAmplitude() {
+        //System.out.println(nowTradeLevel + "nowTradeLevel");
+        return amplitudes[ Math.abs(nowTradeLevel)]; }
 
 }

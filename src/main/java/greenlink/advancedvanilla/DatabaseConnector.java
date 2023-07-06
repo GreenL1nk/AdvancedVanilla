@@ -4,9 +4,7 @@ import greenlink.advancedvanilla.auth.AuthPlayer;
 import greenlink.advancedvanilla.professions.ProfessionBase;
 import greenlink.advancedvanilla.professions.ProfessionManager;
 import greenlink.advancedvanilla.professions.Professions;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.checkerframework.checker.units.qual.A;
 
 import java.sql.*;
 import java.util.Arrays;
@@ -102,6 +100,26 @@ public class DatabaseConnector {
                 }
 
             }
+
+            try {
+                ResultSet resultSet = statement.executeQuery(String.format("SELECT money FROM players_money WHERE uuid='%s'", uuid));
+                if (resultSet.next()) {
+                    rpPlayer.setMoney( resultSet.getInt("money") );
+                }
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+
+            try {
+                ResultSet resultSet = statement.executeQuery(String.format("SELECT value FROM players_settings WHERE uuid='%s' AND settings_id='0'", uuid));
+                if (resultSet.next()) {
+                    rpPlayer.setDisplaySidebarInfo(resultSet.getInt("value") != 0);
+                    //System.out.println(rpPlayer.isDisplaySidebarInfo() + " " + resultSet.getInt("value"));
+                }
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+
             statement.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,10 +158,29 @@ public class DatabaseConnector {
                         authPlayer.getAddress()));
             }
 
+            try {
+                statement.executeUpdate(String.format("INSERT INTO players_money (uuid, money, pocket_money) VALUES ('%s', '%d', '%d') " +
+                                "ON DUPLICATE KEY UPDATE money='%d',pocket_money='%d'",
+                        rpPlayer.getUuid(), rpPlayer.getMoney(), rpPlayer.getPocketMoney(), rpPlayer.getMoney(), rpPlayer.getPocketMoney() ));
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            try {
+                int temp = 0;
+                if (rpPlayer.isDisplaySidebarInfo()) temp = 1;
+                statement.executeUpdate(String.format("INSERT INTO players_settings (uuid, settings_id, value) VALUES ('%s', '0', '%d') " +
+                                "ON DUPLICATE KEY UPDATE value='%d'",
+                        rpPlayer.getUuid(), temp, temp ));
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
             statement.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void closeConnection(){

@@ -2,7 +2,7 @@ package greenlink.advancedvanilla.customrecipes;
 
 import com.google.gson.reflect.TypeToken;
 import greenlink.advancedvanilla.AdvancedVanilla;
-import greenlink.advancedvanilla.ProfileGui;
+import greenlink.advancedvanilla.profileGuis.ProfileGui;
 import greenlink.advancedvanilla.json.Json;
 import lib.utils.AbstractInventoryHolder;
 import net.kyori.adventure.text.Component;

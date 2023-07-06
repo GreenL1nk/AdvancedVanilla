@@ -5,23 +5,18 @@ import greenlink.advancedvanilla.PlayerManager;
 import greenlink.advancedvanilla.RpPlayer;
 import greenlink.advancedvanilla.auth.AuthPlayer;
 import greenlink.advancedvanilla.discord.DiscordManager;
-import greenlink.advancedvanilla.professions.ProfessionSelectGUI;
+import greenlink.advancedvanilla.tradeSystem.SidebarInfoSystem;
 import lib.utils.AbstractListener;
-import lib.utils.Utils;
 import net.dv8tion.jda.api.entities.User;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.logging.Level;
 
 public class ConnectionListener extends AbstractListener {
     private int pluginVersion = 0;
@@ -43,6 +38,8 @@ public class ConnectionListener extends AbstractListener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(event.getPlayer().getUniqueId());
+        if (rpPlayer.isDisplaySidebarInfo()) SidebarInfoSystem.addSidebarToPlayer(event.getPlayer());
+
         event.getPlayer().sendPlayerListHeader(
                 Component.text("Advanced Vanilla ").color(TextColor.color(40091))
                         .append( Component.text( AdvancedVanilla.VERSION_NUMBER + " " ).color(TextColor.color(3193888) ) )

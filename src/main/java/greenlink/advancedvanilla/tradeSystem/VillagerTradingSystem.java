@@ -13,10 +13,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.inventory.BlastingRecipe;
-import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.MerchantInventory;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Type;
@@ -93,11 +90,17 @@ public class VillagerTradingSystem extends AbstractListener {
         if ( event.getRightClicked() instanceof Villager) {
             event.setCancelled(true);
             Villager.Profession profession = ((Villager) event.getRightClicked()).getProfession();
-            profession = Villager.Profession.TOOLSMITH;
 
-            Component component = ((TextComponent)Component.text(profession.toString()).color(TextColor.color(2773694)));
+            if (profession == Villager.Profession.MASON || profession == Villager.Profession.WEAPONSMITH) profession = Villager.Profession.TOOLSMITH;
+            if (profession == Villager.Profession.SHEPHERD || profession == Villager.Profession.LEATHERWORKER) profession = Villager.Profession.FLETCHER;
+            if (profession == Villager.Profession.BUTCHER ) profession = Villager.Profession.FARMER;
+            if (profession == Villager.Profession.CARTOGRAPHER ) profession = Villager.Profession.CLERIC;
             TradingItem[] items = tradingItems.get(profession);
-            if (items != null) VillagerTradeGui.display(component, event.getPlayer(), items, profession);
+
+            if (items != null) {
+                Component component = ((TextComponent)Component.text(profession.toString()).color(TextColor.color(2773694)));
+                VillagerTradeGui.display(component, event.getPlayer(), items, profession);
+            }
         }
 
     }

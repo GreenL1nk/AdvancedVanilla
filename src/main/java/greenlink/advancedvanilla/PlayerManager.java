@@ -1,7 +1,8 @@
 package greenlink.advancedvanilla;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -35,8 +36,9 @@ public class PlayerManager {
         dataBase.savePlayer(players.get(uuid));
     }
 
-    @Nullable
-    public RpPlayer getRpPlayerFromDiscordID(long discordID) {
-        return players.values().stream().filter(player -> player.getAuthPlayer().getDiscordID() == discordID).findFirst().orElse(null);
+    public void savePlayers() {
+        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+            saveRpPlayer(onlinePlayer.getUniqueId());
+        }
     }
 }

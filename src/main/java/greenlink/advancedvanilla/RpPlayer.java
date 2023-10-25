@@ -1,6 +1,5 @@
 package greenlink.advancedvanilla;
 
-import greenlink.advancedvanilla.auth.AuthPlayer;
 import greenlink.advancedvanilla.compasSystem.Compass;
 import greenlink.advancedvanilla.professions.ProfessionBase;
 import greenlink.advancedvanilla.professions.ProfessionManager;
@@ -23,8 +22,8 @@ public class RpPlayer extends MyObservable {
     Player player;
     private Compass[] compasses;
     private int activeCompass;
-    private final AuthPlayer authPlayer;
     private boolean displaySidebarInfo;
+    private Integer countReferrals;
 
     public RpPlayer(UUID uuid) {
         this.uuid = uuid;
@@ -34,8 +33,8 @@ public class RpPlayer extends MyObservable {
         this.oldProfession = null;
         compasses = new Compass[3];
         activeCompass = -1;
-        authPlayer = new AuthPlayer(this);
         this.displaySidebarInfo = false;
+        this.countReferrals = 0;
     }
 
     public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession, String address, long discordID) {
@@ -45,8 +44,6 @@ public class RpPlayer extends MyObservable {
         pocketMoney = 0;
         this.oldProfession = oldProfession;
         activeCompass = -1;
-        this.authPlayer = new AuthPlayer(this, address, discordID);
-        authPlayer.setLinked(true);
         this.displaySidebarInfo = false;
     }
 
@@ -134,10 +131,6 @@ public class RpPlayer extends MyObservable {
         this.activeCompass = activeCompass;
     }
 
-    public AuthPlayer getAuthPlayer() {
-        return authPlayer;
-    }
-
     public boolean isDisplaySidebarInfo() {
         return displaySidebarInfo;
     }
@@ -148,5 +141,12 @@ public class RpPlayer extends MyObservable {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public int getCountReferrals() {
+        if (countReferrals == null) {
+            countReferrals = DatabaseConnector.getInstance().getCountRpPlayerReferrals(uuid);
+        }
+        return countReferrals;
     }
 }

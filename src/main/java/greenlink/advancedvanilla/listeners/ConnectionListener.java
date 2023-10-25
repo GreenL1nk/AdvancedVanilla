@@ -3,11 +3,8 @@ package greenlink.advancedvanilla.listeners;
 import greenlink.advancedvanilla.AdvancedVanilla;
 import greenlink.advancedvanilla.PlayerManager;
 import greenlink.advancedvanilla.RpPlayer;
-import greenlink.advancedvanilla.auth.AuthPlayer;
-import greenlink.advancedvanilla.discord.DiscordManager;
 import greenlink.advancedvanilla.tradeSystem.SidebarInfoSystem;
 import lib.utils.AbstractListener;
-import net.dv8tion.jda.api.entities.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
@@ -49,36 +46,6 @@ public class ConnectionListener extends AbstractListener {
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
-        if (AdvancedVanilla.getInstance().discordEnabled) {
-            RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(event.getPlayer().getUniqueId());
-            AuthPlayer authPlayer = rpPlayer.getAuthPlayer();
-            String hostAddress = event.getRealAddress().getHostAddress();
-            long currentTime = System.currentTimeMillis();
-            if (!authPlayer.isLinked()) {
 
-                Component command = Component.text("/link " + authPlayer.getCode(hostAddress), TextColor.color(3193888));
-
-                Component message = Component.text("Необходимо привязать аккаунт в ", TextColor.color(40091))
-                                .append(Component.text("discord.gg/96UX24vcwX\n", TextColor.color(3193888)))
-                                .append(Component.text("команда ", TextColor.color(40091)))
-                                .append(command)
-                                .append(Component.text("\nкод действует 15 минут", TextColor.color(40091)));
-
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, message);
-            }
-            else {
-
-                if (!authPlayer.getAddress().equals(hostAddress)) {
-                    event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Component.text("Подтвердите вход в личном сообщении от бота", TextColor.color(40091)));
-
-                    DiscordManager instance = DiscordManager.getInstance();
-                    User userById = instance.getJda().getUserById(authPlayer.getDiscordID());
-                    if (userById == null) return;
-                    instance.sendMessageWithButtons(
-                            userById, hostAddress, currentTime);
-                }
-            }
-
-        }
     }
 }

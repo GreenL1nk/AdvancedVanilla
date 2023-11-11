@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class PlayerManager {
-    private HashMap<UUID, RpPlayer> players = new HashMap<>();
+    private final HashMap<UUID, RpPlayer> players = new HashMap<>();
     private static PlayerManager instance;
     private final DatabaseConnector dataBase;
     private PlayerManager(){

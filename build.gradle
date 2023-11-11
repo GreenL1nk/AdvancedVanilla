@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
+    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("org.jetbrains:annotations:15.0")
     implementation("com.jeff_media:CustomBlockData:2.2.0")
@@ -50,9 +50,7 @@ java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
 tasks.withType(JavaCompile).configureEach {

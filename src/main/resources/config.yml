@@ -4,6 +4,3 @@ mySQL:
   dbname: database
   user: user
   password: password
-discord:
-  enable: false
-  token: ""

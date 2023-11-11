@@ -37,7 +37,7 @@ public class RpPlayer extends MyObservable {
         this.countReferrals = 0;
     }
 
-    public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession, String address, long discordID) {
+    public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession) {
         this.uuid = uuid;
         this.profession = profession;
         money = 0;

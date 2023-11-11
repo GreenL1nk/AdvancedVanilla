@@ -1,6 +1,5 @@
 package greenlink.advancedvanilla.professions;
 
-import greenlink.advancedvanilla.professions.fisherman.Fisherman;
 import greenlink.advancedvanilla.professions.miner.Miner;
 import greenlink.advancedvanilla.professions.requirements.ItemRequirement;
 import greenlink.advancedvanilla.professions.woodcutter.Woodcutter;
@@ -60,19 +59,6 @@ public class ProfessionManager {
                                 new ItemRequirement(new ItemStack(Material.REDSTONE_ORE, 448)),
                                 new ItemRequirement(new ItemStack(Material.LAPIS_ORE, 256)),
                                 new ItemRequirement(new ItemStack(Material.COPPER_ORE, 256))
-                        ));
-            }
-            case FISHERMAN -> {
-                return new Fisherman("Рыбак",
-                        new Level(1,
-                                new ItemStack(Material.FISHING_ROD),
-                                new ItemRequirement(new ItemStack(Material.PUFFERFISH, 20)),
-                                new ItemRequirement(new ItemStack(Material.SALMON, 10))
-                        ),
-                        new Level(2,
-                                new ItemStack(Material.FISHING_ROD),
-                                new ItemRequirement(new ItemStack(Material.PUFFERFISH, 20)),
-                                new ItemRequirement(new ItemStack(Material.SALMON, 10))
                         ));
             }
             default -> {

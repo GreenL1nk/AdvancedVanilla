@@ -73,21 +73,10 @@ public class DatabaseConnector {
                 ProfessionBase oldProfession = result.getString("old_profession").equals("null") ? null
                         : ProfessionManager.getInstance().getProfession(Professions.valueOf(result.getString("old_profession")));
 
-                ResultSet authPlayerResult = statement.executeQuery(String.format("SELECT ip, discord_id FROM auth_players WHERE uuid='%s'", uuid));
-                if (authPlayerResult.next()) {
-                    String ip = authPlayerResult.getString("ip");
-                    long discordID = authPlayerResult.getLong("discord_id");
-                    rpPlayer = new RpPlayer(uuid,
-                            currentProfession,
-                            oldProfession,
-                            ip,
-                            discordID);
-                    rpPlayer.getCountReferrals();
-                }
-                else {
-                    rpPlayer = new RpPlayer(uuid);
-                }
-
+                rpPlayer = new RpPlayer(uuid,
+                        currentProfession,
+                        oldProfession);
+                rpPlayer.getCountReferrals();
             }
 
             try {

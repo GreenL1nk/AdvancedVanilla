@@ -41,4 +41,5 @@ public abstract class AbstractInventoryHolder implements InventoryHolder {
     public void shiftClickFromPlayerInventory(InventoryClickEvent event) {
         event.setCancelled(true);
     }
+    public void clickFromPlayerInventory(InventoryClickEvent event) {}
 }

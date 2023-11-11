@@ -18,6 +18,11 @@ public class InventoryListener extends AbstractListener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getClickedInventory() != null) {
+            if (event.getView().getTopInventory().getHolder() instanceof AbstractInventoryHolder) {
+                if (event.getRawSlot() > event.getView().getTopInventory().getSize() - 1) {
+                    ((AbstractInventoryHolder) event.getView().getTopInventory().getHolder()).clickFromPlayerInventory(event);
+                }
+            }
             if (event.getClickedInventory().getHolder() instanceof AbstractInventoryHolder) {
                 ((AbstractInventoryHolder) event.getClickedInventory().getHolder()).click(event);
             }
@@ -29,7 +34,7 @@ public class InventoryListener extends AbstractListener {
 
     @EventHandler
     public void onDrag(InventoryDragEvent event) {
-        if (event.getRawSlots().stream().anyMatch(slot -> slot <= 53)) {
+        if (event.getRawSlots().stream().anyMatch(slot -> slot <= event.getView().getTopInventory().getSize() - 1)) {
             if (event.getInventory().getHolder() instanceof AbstractInventoryHolder)
                 ((AbstractInventoryHolder) event.getInventory().getHolder()).onDrag(event);
         }

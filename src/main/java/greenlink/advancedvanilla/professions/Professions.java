@@ -1,7 +1,5 @@
 package greenlink.advancedvanilla.professions;
 
-import greenlink.advancedvanilla.professions.fisherman.Fisherman;
-import greenlink.advancedvanilla.professions.fisherman.FishermanListener;
 import greenlink.advancedvanilla.professions.miner.Miner;
 import greenlink.advancedvanilla.professions.miner.MinerListener;
 import greenlink.advancedvanilla.professions.woodcutter.Woodcutter;
@@ -14,8 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 public enum Professions {
     MINER(new Miner(""), Utils.getItem(Component.text("Шахтёр").color(NamedTextColor.YELLOW), Material.STONE_PICKAXE), new MinerListener()),
-    WOODCUTTER(new Woodcutter(""), Utils.getItem(Component.text("Лесоруб").color(NamedTextColor.YELLOW), Material.STONE_AXE), new WoodcutterListener()),
-    FISHERMAN(new Fisherman(""), Utils.getItem(Component.text("Рыбак").color(NamedTextColor.YELLOW), Material.FISHING_ROD), new FishermanListener());
+    WOODCUTTER(new Woodcutter(""), Utils.getItem(Component.text("Лесоруб").color(NamedTextColor.YELLOW), Material.STONE_AXE), new WoodcutterListener());
 
     private final ProfessionBase professionBase;
     private final ItemStack displayItem;

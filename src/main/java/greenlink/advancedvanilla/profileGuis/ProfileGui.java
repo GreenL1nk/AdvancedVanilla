@@ -127,6 +127,6 @@ public class ProfileGui extends AbstractInventoryHolder {
 
     public static void display(Player player){
         ProfileGui profileGui = new ProfileGui(player);
-        Bukkit.getServer().getScheduler().runTaskLater(AdvancedVanilla.getInstance(),()->{ profileGui.open(); }, 1);
+        Bukkit.getServer().getScheduler().runTaskLater(AdvancedVanilla.getInstance(), profileGui::open, 1);
     }
 }

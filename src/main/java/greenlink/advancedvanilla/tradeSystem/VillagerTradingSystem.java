@@ -94,7 +94,7 @@ public class VillagerTradingSystem extends AbstractListener {
             if (profession == Villager.Profession.MASON || profession == Villager.Profession.WEAPONSMITH) profession = Villager.Profession.TOOLSMITH;
             if (profession == Villager.Profession.SHEPHERD || profession == Villager.Profession.LEATHERWORKER) profession = Villager.Profession.FLETCHER;
             if (profession == Villager.Profession.BUTCHER ) profession = Villager.Profession.FARMER;
-            if (profession == Villager.Profession.CARTOGRAPHER ) profession = Villager.Profession.CLERIC;
+            //if (profession == Villager.Profession.CARTOGRAPHER ) profession = Villager.Profession.CLERIC;
             TradingItem[] items = tradingItems.get(profession);
 
             if (items != null) {

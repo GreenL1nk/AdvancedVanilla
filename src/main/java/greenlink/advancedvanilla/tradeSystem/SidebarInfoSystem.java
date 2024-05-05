@@ -42,7 +42,7 @@ public class SidebarInfoSystem extends AbstractListener implements MyObserver {
         {
             Team tempTeam = playerScoreBoard.registerNewTeam("money");
             tempTeam.color(NamedTextColor.GRAY);
-            tempTeam.suffix( Component.text(rpPlayer.getMoney()).color(TextColor.color(9290582)) );
+            tempTeam.suffix( Component.text(rpPlayer.getBankMoney()).color(TextColor.color(9290582)) );
             tempTeam.addEntry("Деньги: ");
             Score moneyScore = objective.getScore("Деньги: ");
             moneyScore.setScore(8);
@@ -87,7 +87,7 @@ public class SidebarInfoSystem extends AbstractListener implements MyObserver {
 
         Team money = scoreboard.getTeam("money");
         if (money != null) {
-            money.suffix( Component.text(rpPlayer.getMoney()).color(TextColor.color(9290582)) );
+            money.suffix( Component.text(rpPlayer.getBankMoney()).color(TextColor.color(9290582)) );
         }
 
         Team profession = scoreboard.getTeam("profession");

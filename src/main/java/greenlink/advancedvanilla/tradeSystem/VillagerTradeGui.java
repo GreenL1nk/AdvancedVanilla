@@ -10,6 +10,8 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -59,8 +61,19 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
             slot = (slot/9 * 5) + slot % 9;
             //System.out.println(slot + " " + this.items.length);
             if (slot < this.items.length) {
-                if ( event.isLeftClick() && items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {  }
-                if ( event.isRightClick() && items[slot].trySellItem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {  }
+                if ( event.isLeftClick() )
+                    if ( items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {
+                        requester.playSound( requester.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0F, 0.2F);
+                    } else {
+                        requester.playSound( requester.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
+
+                if ( event.isRightClick() )
+                    if ( items[slot].trySellItem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {
+                        requester.playSound( requester.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    } else {
+                        requester.playSound( requester.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
             }
         }
 
@@ -103,42 +116,57 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
 
     private void updateDisplayItem(int index){
         //System.out.println("index = " + index + " ");
-        ItemStack itemStack = new ItemStack(items[index].getMaterial());
-        ArrayList<Component> lore = new ArrayList<>();
-        lore.add(Component.text(" "));
-        lore.add(Component.text("Колличество: ").color(TextColor.color(972270)).
-                append(Component.text(items[index].getCount() ).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false));
-        lore.add(Component.text(" "));
+        try {
+            ItemStack itemStack = new ItemStack(items[index].getMaterial());
+            ArrayList<Component> lore = new ArrayList<>();
 
-        if (items[index].isCanBuy()) {
-            lore.add( Component.text("Покупка: ").color(TextColor.color(972270)).
-                    append(Component.text(items[index].getNowBuyPrice()).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false) );
+            if (items[index].isCanBuy()) {
+                lore.add(Component.text("Купить предмет: ").color(TextColor.color(11184810)).
+                        append(Component.text("ЛКМ").color(TextColor.color(16777045))).decoration(TextDecoration.ITALIC, false));
+            }
+
+            if (items[index].isCanSell()) {
+                lore.add(Component.text("Продать предмет: ").color(TextColor.color(11184810)).
+                        append(Component.text("ПКМ").color(TextColor.color(16777045))).decoration(TextDecoration.ITALIC, false));
+            }
+
+            lore.add(Component.text(" "));
+            lore.add(Component.text("Колличество: ").color(TextColor.color(11184810)).
+                    append(Component.text(items[index].getCount()).color(TextColor.color(972270))).decoration(TextDecoration.ITALIC, false));
+            lore.add(Component.text(" "));
+
+            if (items[index].isCanBuy()) {
+                lore.add(Component.text("Покупка: ").color(TextColor.color(11184810)).
+                        append(Component.text(items[index].getNowBuyPrice()).color(TextColor.color(16755200))).decoration(TextDecoration.ITALIC, false));
+            }
+
+            if (items[index].isCanSell()) {
+                lore.add(Component.text("Продажа: ").color(TextColor.color(11184810)).
+                        append(Component.text(items[index].getNowBuyPrice() - 1).color(TextColor.color(16755200))).decoration(TextDecoration.ITALIC, false));
+            }
+
+            TextComponent color = Component.text("Лимит скупки: ").color(TextColor.color(11184810));
+            int leftForLevelChange = items[index].getLeftForLevelChange();
+            if (leftForLevelChange > 0) {
+                color = color.append(Component.text("▲").color(TextColor.color(11278368)));
+                leftForLevelChange = items[index].getNowAmplitude() - leftForLevelChange;
+            } else if (leftForLevelChange < 0) {
+                color = color.append(Component.text("▼").color(TextColor.color(11278368)));
+                leftForLevelChange = items[index].getNowAmplitude() + leftForLevelChange;
+            } else leftForLevelChange = items[index].getNowAmplitude();
+
+
+            color = color.append(Component.text(leftForLevelChange).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false);
+            lore.add(color);
+
+            ItemMeta itemMeta = itemStack.getItemMeta();
+
+            itemMeta.lore(lore);
+            itemStack.setItemMeta(itemMeta);
+            this.inventory.setItem(20 + (index % 5) + 9 * (index / 5), itemStack);
+        } catch (Exception e){
+            System.out.println(index);
+            e.printStackTrace();
         }
-
-        if (items[index].isCanSell()) {
-            lore.add( Component.text("Продажа: ").color(TextColor.color(972270)).
-                    append(Component.text(items[index].getNowBuyPrice()-1).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false) );
-        }
-
-        TextComponent color = Component.text("Лимит скупки: ").color(TextColor.color(972270));
-        int leftForLevelChange = items[index].getLeftForLevelChange();
-        if (leftForLevelChange > 0){
-            color = color.append(Component.text("▲").color(TextColor.color(11278368)));
-            leftForLevelChange = items[index].getNowAmplitude() - leftForLevelChange;
-        } else
-        if (leftForLevelChange < 0) {
-            color = color.append(Component.text("▼").color(TextColor.color(11278368)));
-            leftForLevelChange = items[index].getNowAmplitude() + leftForLevelChange;
-        } else leftForLevelChange = items[index].getNowAmplitude();
-
-
-        color = color.append(Component.text(leftForLevelChange).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false);
-        lore.add(color);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
-        itemMeta.lore(lore);
-        itemStack.setItemMeta(itemMeta);
-        this.inventory.setItem(20 + (index % 5) + 9*(index / 5) , itemStack);
     }
 }

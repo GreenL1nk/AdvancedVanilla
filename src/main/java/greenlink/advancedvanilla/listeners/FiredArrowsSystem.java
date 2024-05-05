@@ -52,6 +52,8 @@ public class FiredArrowsSystem extends AbstractListener {
         }
     }
 
+    private int specialChecker = 0;
+
     @EventHandler
     public void firedArrowByCampFire(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
@@ -92,13 +94,18 @@ public class FiredArrowsSystem extends AbstractListener {
         if (meta.getLore() != null) {
             return;
         }
+
+        specialChecker++;
+
         // TODO: 12.06.2023 refactor to Component
         List<String> loreList = new ArrayList<String>();
         loreList.add(ChatColor.GOLD + "special"); //This is the first line of lore
         loreList.add(ChatColor.RED + "fired"); //This is the second line of lore
-        String date = String.valueOf(System.currentTimeMillis());
+        String date = String.valueOf(System.currentTimeMillis() + (specialChecker/10) + "" + (specialChecker % 10) );
         loreList.add(ChatColor.AQUA + date);
         meta.setLore(loreList);
         arrow.setItemMeta(meta);
+        specialChecker++;
+        specialChecker = specialChecker % 100;
     }
 }

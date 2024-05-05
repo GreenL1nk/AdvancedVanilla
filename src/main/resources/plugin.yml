@@ -7,3 +7,5 @@ commands:
     usage: ''
   compass:
     usage: ''
+  changelog:
+    usage: ''

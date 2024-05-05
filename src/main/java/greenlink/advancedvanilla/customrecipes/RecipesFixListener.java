@@ -37,15 +37,15 @@ public class RecipesFixListener extends AbstractListener {
         }
     }
 
-    @EventHandler
-    public void fix(PlayerJoinEvent event){
-        Player player = event.getPlayer();
-        if (alreadyReloaded.get(event.getPlayer().getUniqueId()) != null) {
-            return;
-        }
-
-        player.undiscoverRecipes( player.getDiscoveredRecipes() );
-        player.discoverRecipes(recipes);
-        alreadyReloaded.put(player.getUniqueId(), true);
-    }
+//    @EventHandler
+//    public void fix(PlayerJoinEvent event){
+//        Player player = event.getPlayer();
+//        if (alreadyReloaded.get(event.getPlayer().getUniqueId()) != null) {
+//            return;
+//        }
+//
+//        player.undiscoverRecipes( player.getDiscoveredRecipes() );
+//        player.discoverRecipes(recipes);
+//        alreadyReloaded.put(player.getUniqueId(), true);
+//    }
 }

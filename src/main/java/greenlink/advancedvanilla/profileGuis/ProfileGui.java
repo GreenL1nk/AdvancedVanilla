@@ -2,7 +2,7 @@ package greenlink.advancedvanilla.profileGuis;
 
 import greenlink.advancedvanilla.AdvancedVanilla;
 import greenlink.advancedvanilla.customrecipes.RecipesMenuGui;
-import greenlink.advancedvanilla.professions.ProfessionSelectGUI;
+import hemok98.professionsSystem.ProfessionSelectMenu;
 import lib.utils.AbstractInventoryHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -106,7 +106,7 @@ public class ProfileGui extends AbstractInventoryHolder {
         Player player = (Player) event.getWhoClicked();
 
         switch (event.getSlot()) {
-            case  14 : { if (event.isLeftClick()) ProfessionSelectGUI.display(player);
+            case  14 : { if (event.isLeftClick()) ProfessionSelectMenu.display(player);
                 } break;
             case 29 : { if (event.isLeftClick()) RecipesMenuGui.display(player, 0);
             } break;

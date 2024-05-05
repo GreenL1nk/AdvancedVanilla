@@ -1,14 +1,13 @@
 package greenlink.advancedvanilla;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 public class PlayerManager {
-    private final HashMap<UUID, RpPlayer> players = new HashMap<>();
+    private HashMap<UUID, RpPlayer> players = new HashMap<>();
     private static PlayerManager instance;
     private final DatabaseConnector dataBase;
     private PlayerManager(){
@@ -36,9 +35,4 @@ public class PlayerManager {
         dataBase.savePlayer(players.get(uuid));
     }
 
-    public void savePlayers() {
-        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
-            saveRpPlayer(onlinePlayer.getUniqueId());
-        }
-    }
 }

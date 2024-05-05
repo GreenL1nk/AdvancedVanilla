@@ -1,9 +1,7 @@
 package greenlink.advancedvanilla;
 
 import greenlink.advancedvanilla.compasSystem.Compass;
-import greenlink.advancedvanilla.professions.ProfessionBase;
-import greenlink.advancedvanilla.professions.ProfessionManager;
-import greenlink.advancedvanilla.professions.Professions;
+import hemok98.professionsSystem.professions.Profession;
 import lib.utils.MyObservable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,71 +11,58 @@ import java.util.UUID;
 
 public class RpPlayer extends MyObservable {
     private final UUID uuid;
-    private ProfessionBase profession;
-    private int money;
+    private Profession profession;
     private int pocketMoney;
     private int bankMoney;
-    private ProfessionBase oldProfession;
-    private long professionNextChangeTime;
+    private Profession oldProfession;
+    private long professionTimeChange;
     Player player;
     private Compass[] compasses;
     private int activeCompass;
     private boolean displaySidebarInfo;
-    private Integer countReferrals;
 
     public RpPlayer(UUID uuid) {
         this.uuid = uuid;
         this.profession = null;
-        money = 0;
         pocketMoney = 0;
+        bankMoney = 0;
         this.oldProfession = null;
         compasses = new Compass[3];
         activeCompass = -1;
-        this.displaySidebarInfo = false;
-        this.countReferrals = 0;
+        this.displaySidebarInfo = true;
+        professionTimeChange = 0;
     }
 
-    public RpPlayer(UUID uuid, ProfessionBase profession, ProfessionBase oldProfession) {
-        this.uuid = uuid;
-        this.profession = profession;
-        money = 0;
-        pocketMoney = 0;
-        this.oldProfession = oldProfession;
-        activeCompass = -1;
-        this.displaySidebarInfo = false;
+    public void setProfessionTimeChange(long professionTimeChange) {
+        this.professionTimeChange = professionTimeChange;
     }
 
     public UUID getUuid() {
         return uuid;
     }
 
+    public long getProfessionTimeChange() {
+        return professionTimeChange;
+    }
+
     @Nullable
-    public ProfessionBase getProfession() {
+    public Profession getProfession() {
         return profession;
     }
 
-    public boolean setProfession(Professions professions) {
-        ProfessionBase profession = ProfessionManager.getInstance().getProfession(professions);
-        long currentTime = System.currentTimeMillis();
-        if (profession == null) return false;
-        if (professionNextChangeTime != 0 && professionNextChangeTime < currentTime) return false;
-        professionNextChangeTime = currentTime + 43200000L; //12ч
-        if (this.profession != null) setOldProfession(profession);
+    public void setProfession(Profession profession) {
         this.profession = profession;
-        this.profession.setRpPlayer(this);
-        return true;
+        this.professionTimeChange = System.currentTimeMillis();
+        notifyObservers();
     }
 
-    public ProfessionBase getOldProfession() {
+    public Profession getOldProfession() {
         return oldProfession;
     }
 
-    public void setOldProfession(ProfessionBase oldProfession) {
-        this.oldProfession = oldProfession;
-    }
+    public void setOldProfession(Profession oldProfession) {
 
-    public int getMoney() {
-        return money;
+        this.oldProfession = oldProfession;
     }
 
     public int getPocketMoney() {
@@ -89,9 +74,9 @@ public class RpPlayer extends MyObservable {
     }
 
     public boolean takeMoney(int takenMoney) {
-        if (this.getMoney() + this.getPocketMoney() - takenMoney < 0) return false;
+        if (this.getPocketMoney() + this.getBankMoney() - takenMoney < 0) return false;
 
-        int temp = Math.min(this.getMoney(), takenMoney);
+        int temp = Math.min(this.getPocketMoney(), takenMoney);
         this.removeMoney(temp);
         removePocketMoney(takenMoney - temp);
         notifyObservers();
@@ -99,17 +84,17 @@ public class RpPlayer extends MyObservable {
     }
 
     private void removeMoney(int money) {
-        this.money -= money;
-        notifyObservers();
-    }
-
-    private void removePocketMoney(int money) {
         this.pocketMoney -= money;
         notifyObservers();
     }
 
+    private void removePocketMoney(int money) {
+        this.bankMoney -= money;
+        notifyObservers();
+    }
+
     public void addMoney(int money){
-        this.money+=money;
+        this.pocketMoney +=money;
         notifyObservers();
     }
 
@@ -139,14 +124,13 @@ public class RpPlayer extends MyObservable {
         this.displaySidebarInfo = displaySidebarInfo;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public void setPocketMoney(int pocketMoney) {
+        this.pocketMoney = pocketMoney;
+        notifyObservers();
     }
 
-    public int getCountReferrals() {
-        if (countReferrals == null) {
-            countReferrals = DatabaseConnector.getInstance().getCountRpPlayerReferrals(uuid);
-        }
-        return countReferrals;
+    public void setBankMoney(int bankMoney) {
+        this.bankMoney = bankMoney;
+        notifyObservers();
     }
 }

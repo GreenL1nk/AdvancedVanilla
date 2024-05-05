@@ -112,14 +112,12 @@ public class TradingItem extends MyObservable {
             leftForLevelChange = 0;
         }
 
-
-
         notifyObservers();
         return true;
     }
 
     public int getNowBuyPrice(){
-        return basePrice * ((100 + 15*( (-1)* nowTradeLevel ))/10)/10;
+        return basePrice * ((100 + 15*(  nowTradeLevel ))/10)/10;
     }
 
     public boolean timeCheck(){

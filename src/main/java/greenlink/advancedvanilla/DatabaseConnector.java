@@ -1,12 +1,11 @@
 package greenlink.advancedvanilla;
 
-import greenlink.advancedvanilla.professions.ProfessionBase;
-import greenlink.advancedvanilla.professions.ProfessionManager;
-import greenlink.advancedvanilla.professions.Professions;
+import greenlink.advancedvanilla.changelogNoteSystem.ChangelogContainer;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -15,6 +14,7 @@ public class DatabaseConnector {
     private String user;
     private String password;
     private Connection connection;
+    private long lastTimeConnect;
 
     private static DatabaseConnector instance;
 
@@ -26,6 +26,7 @@ public class DatabaseConnector {
     }
 
     private DatabaseConnector() {
+        lastTimeConnect = 0;
         try {
             FileConfiguration config = AdvancedVanilla.getInstance().getConfig();
             String host = config.getString("mySQL.host");
@@ -33,7 +34,7 @@ public class DatabaseConnector {
             user = config.getString("mySQL.user");
             String dbname = config.getString("mySQL.dbname");
             password = config.getString("mySQL.password");
-            url = "jdbc:mysql://" + host + ":" + port + "/" + dbname + "?autoReconnect=true";
+            url = "jdbc:mysql://" + host + ":" + port + "/" + dbname;
 
             connection = getConnection();
             AdvancedVanilla.getInstance().getLogger().info("Using MySQL");
@@ -50,39 +51,48 @@ public class DatabaseConnector {
                     ;""");
 
 
+            statement.executeUpdate("""
+                    CREATE TABLE IF NOT EXISTS `players_settings` (
+                     	`uuid` VARCHAR(36) NOT NULL,
+                     	`settings_id` INT DEFAULT NULL,
+                     	`value` INT DEFAULT NULL,
+                     	PRIMARY KEY (`uuid`)
+                     )""");
+
+            statement.executeUpdate("""
+                                CREATE TABLE IF NOT EXISTS `players_money` (
+                                    `uuid` VARCHAR(36) NOT NULL,
+                                    `money` INT NULL DEFAULT NULL,
+                                    `pocket_money` INT NULL DEFAULT NULL,
+                                    PRIMARY KEY (`uuid`)
+                                 )""");
+
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `changelog_notify` (\n" +
+                    "\t`uuid` VARCHAR(36) NOT NULL,\n" +
+                    "\t`notify_number` INT NOT NULL,\n" +
+                    "\tPRIMARY KEY (`uuid`)\n" +
+                    ")\n" +
+                    "COLLATE='utf8_unicode_ci'\n" +
+                    ";");
+
+
             statement.close();
         } catch (Exception e) {
-            AdvancedVanilla.getInstance().getLogger().log(Level.WARNING,"Ошибка при подключении к базе данных");
+            AdvancedVanilla.getInstance().getLogger().log(Level.WARNING,e.getMessage());
         }
     }
 
     public RpPlayer getPlayer(UUID uuid) {
-        RpPlayer rpPlayer;
+        RpPlayer rpPlayer = new RpPlayer(uuid);
+        Statement statement = null;
         try {
-
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(String.format("SELECT current_profession, old_profession FROM advanced_players WHERE uuid='%s'", uuid));
-
-            if(!result.next()) {
-                rpPlayer = new RpPlayer(uuid);
-            }
-            else {
-
-                ProfessionBase currentProfession = result.getString("current_profession").equals("null") ? null
-                        : ProfessionManager.getInstance().getProfession(Professions.valueOf(result.getString("current_profession")));
-                ProfessionBase oldProfession = result.getString("old_profession").equals("null") ? null
-                        : ProfessionManager.getInstance().getProfession(Professions.valueOf(result.getString("old_profession")));
-
-                rpPlayer = new RpPlayer(uuid,
-                        currentProfession,
-                        oldProfession);
-                rpPlayer.getCountReferrals();
-            }
+            statement = getConnection().createStatement();
 
             try {
-                ResultSet resultSet = statement.executeQuery(String.format("SELECT money FROM players_money WHERE uuid='%s'", uuid));
+                ResultSet resultSet = statement.executeQuery(String.format("SELECT money, pocket_money FROM players_money WHERE uuid='%s'", uuid));
                 if (resultSet.next()) {
-                    rpPlayer.setMoney( resultSet.getInt("money") );
+                    rpPlayer.setPocketMoney( resultSet.getInt("money") );
+                    rpPlayer.setBankMoney( resultSet.getInt("pocket_money") );
                 }
             } catch (Exception e){
                 System.out.println(e.getMessage());
@@ -98,11 +108,18 @@ public class DatabaseConnector {
                 System.out.println(e.getMessage());
             }
 
-            statement.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            rpPlayer = new RpPlayer(uuid);
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
+
+
+
         return rpPlayer;
     }
 
@@ -110,28 +127,13 @@ public class DatabaseConnector {
     public void savePlayer(RpPlayer rpPlayer) {
         try {
 
-            Statement statement = connection.createStatement();
+            Statement statement = getConnection().createStatement();
 
-            Professions currentProfession = Arrays.stream(Professions.values())
-                    .filter(professions -> professions.getProfessionBase().getClass().isInstance(rpPlayer.getProfession()))
-                    .findFirst().orElse(null);
-
-            Professions oldProfession = Arrays.stream(Professions.values())
-                    .filter(professions -> professions.getProfessionBase().getClass().isInstance(rpPlayer.getOldProfession()))
-                    .findFirst().orElse(null);
-
-            String professionName = currentProfession == null ? null : currentProfession.name();
-            String oldProfessionName = oldProfession == null ? null : oldProfession.name();
-
-            statement.executeUpdate(String.format("INSERT INTO advanced_players (uuid, current_profession, old_profession) VALUES ('%s', '%s', '%s') " +
-                            "ON DUPLICATE KEY UPDATE current_profession='%s', old_profession='%s'",
-                    rpPlayer.getUuid(), professionName, oldProfessionName,
-                    professionName, oldProfessionName));
 
             try {
                 statement.executeUpdate(String.format("INSERT INTO players_money (uuid, money, pocket_money) VALUES ('%s', '%d', '%d') " +
                                 "ON DUPLICATE KEY UPDATE money='%d',pocket_money='%d'",
-                        rpPlayer.getUuid(), rpPlayer.getMoney(), rpPlayer.getPocketMoney(), rpPlayer.getMoney(), rpPlayer.getPocketMoney() ));
+                        rpPlayer.getUuid(), rpPlayer.getPocketMoney(), rpPlayer.getBankMoney(), rpPlayer.getPocketMoney(), rpPlayer.getBankMoney() ));
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -153,29 +155,49 @@ public class DatabaseConnector {
 
     }
 
-    public int getCountRpPlayerReferrals(UUID uuid) {
+    public int getChangelogNotify(UUID uuid ){
+        //if (!useSQLdDB){ return; }
+
+        int lastNotifNumber = -1;
+
         try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("ALTER TABLE advanced_players ADD COLUMN IF NOT EXISTS count_referrals INT DEFAULT 0");
-            ResultSet result = statement.executeQuery(String.format("SELECT count_referrals FROM advanced_players WHERE uuid='%s'", uuid));
+            Statement statement = getConnection().createStatement();
+            ResultSet result = statement.executeQuery(String.format(Locale.US,"SELECT notify_number FROM changelog_notify WHERE uuid='%s'", uuid) );
+
             if(result.next()) {
-                return result.getInt("count_referrals");
+                lastNotifNumber = result.getInt("notify_number");
+                //EventsCorePlugin.getInstance().getLogger().info("=lastNotifNumber= " + lastNotifNumber);
             }
-        } catch (Exception e) {
+
+        } catch (Exception e){
             e.printStackTrace();
         }
-        return 0;
+
+        try {
+            Statement statement = getConnection().createStatement();
+            statement.executeUpdate(String.format(Locale.US, "INSERT INTO changelog_notify (uuid, notify_number) VALUES('%s', %d) ON DUPLICATE KEY UPDATE notify_number='%d'", uuid, ChangelogContainer.getLastChangeNumber(), ChangelogContainer.getLastChangeNumber()));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return lastNotifNumber;
+
     }
 
     public void closeConnection(){
         try {
-            connection.close();
+            if (connection != null) connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     private Connection getConnection() throws SQLException {
-        return this.user != null ? DriverManager.getConnection(this.url, this.user, this.password) : DriverManager.getConnection(this.url);
+        if ( System.currentTimeMillis() - lastTimeConnect > 1000*60*60 || connection == null) {
+            if (connection != null) closeConnection();
+            connection = this.user != null ? DriverManager.getConnection(this.url, this.user, this.password) : DriverManager.getConnection(this.url);
+            lastTimeConnect = System.currentTimeMillis();
+        }
+        return connection;
     }
 }

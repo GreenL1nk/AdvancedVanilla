@@ -19,7 +19,7 @@ public abstract class AbstractInventoryHolder implements InventoryHolder {
         this.requester = requester;
     }
 
-    protected abstract void init();
+    protected  void init(){};
 
     public abstract void click(InventoryClickEvent event);
     public abstract void close(InventoryCloseEvent event);

@@ -1,23 +1,36 @@
-package greenlink.advancedvanilla.comands;
+package greenlink.advancedvanilla.changelogNoteSystem;
 
-import greenlink.advancedvanilla.PlayerManager;
-import greenlink.advancedvanilla.RpPlayer;
-import greenlink.advancedvanilla.compasSystem.CompasListener;
+
 import lib.utils.AbstractCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.List;
 
-public class CompassCommand extends AbstractCommand {
+public class ChangelogCommand extends AbstractCommand {
     @Override
     protected void onPlayerCommand(@NotNull Player player, @NotNull String[] args) {
-        if (args.length >= 1 && args[0].equals("stop")) {
-            CompasListener.endCompass(player);
-            RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(player.getUniqueId());
-            rpPlayer.setActiveCompass(-1);
+        if ( args.length == 0 ){
+            ChangelogContainer.displayChangesList( player );
+        }
+
+        if (args.length == 1) {
+
+            int number = -1;
+
+            try {
+                number = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                number = -1;
+            }
+
+            if ( number < 0) {
+                return;
+            }
+
+            ChangelogContainer.displayChanges(player, number);
         }
     }
 
@@ -28,7 +41,7 @@ public class CompassCommand extends AbstractCommand {
 
     @Override
     protected List<String> onPlayerTab(@NotNull Player player, @NotNull String[] args) {
-        return Collections.singletonList("stop");
+        return null;
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +43,7 @@ public class CompassGui extends AbstractInventoryHolder {
         for (int i = 0; i < rpPlayer.getCompasses().length; i++) {
             this.inventory.setItem(20+i*2, getDisplayerCompas(rpPlayer.getCompasses()[i], i+1, rpPlayer.getActiveCompass() == i) );
         }
+        this.inventory.setItem(24, new ItemStack(Material.BARRIER));
 
     }
 
@@ -56,7 +58,7 @@ public class CompassGui extends AbstractInventoryHolder {
             if (compass == null) {
                 lore.add(Component.text("Точка не задана").color(TextColor.color(14824757)).decoration(TextDecoration.ITALIC, false));
                 lore.add(Component.text("Сохранить текущую точку: ").color(TextColor.color(11064039)).append(
-                        Component.text( "Shift + ЛКМ" ).color(TextColor.color(9290582))
+                        Component.text( "Shift + ПКМ" ).color(TextColor.color(9290582))
                 ).decoration(TextDecoration.ITALIC, false) );
             } else {
                 lore.add(Component.text("X: ").color(TextColor.color(972270)).append(Component.text( compass.getDestinationX() ).color(TextColor.color(9290582))).decoration(TextDecoration.ITALIC, false));
@@ -80,7 +82,12 @@ public class CompassGui extends AbstractInventoryHolder {
             itemStack.setItemMeta(itemMeta);
         }
 
-        if (isActive) itemStack.addUnsafeEnchantment(Enchantment.MENDING, 1);
+        if (isActive) {
+            itemStack.addUnsafeEnchantment(Enchantment.MENDING, 1);
+            ItemMeta tempMeta = itemStack.getItemMeta();
+            tempMeta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
+            itemStack.setItemMeta(tempMeta);
+        }
 
         return itemStack;
     }

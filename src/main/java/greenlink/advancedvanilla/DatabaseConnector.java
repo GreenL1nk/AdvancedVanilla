@@ -4,7 +4,6 @@ import greenlink.advancedvanilla.changelogNoteSystem.ChangelogContainer;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.*;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;

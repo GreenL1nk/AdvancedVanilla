@@ -32,10 +32,10 @@ public class ProfessionManager extends AbstractListener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
         RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(event.getPlayer().getUniqueId());
-        proffessionAction(event, rpPlayer);
+        professionAction(event, rpPlayer);
     }
 
-    private void proffessionAction(Event event, RpPlayer rpPlayer){
+    private void professionAction(Event event, RpPlayer rpPlayer){
 
         Profession mainProf = rpPlayer.getProfession();
         Profession secondProf = rpPlayer.getOldProfession();

@@ -11,6 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemChanger {
+
+    public static ItemStack getItem(Component name, Material material) {
+        ItemStack itemStack = new ItemStack(material);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.displayName(name.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
     public static ItemStack changeName(ItemStack item, String str){
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta != null) {

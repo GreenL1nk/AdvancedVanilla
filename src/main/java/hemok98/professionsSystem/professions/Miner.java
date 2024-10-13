@@ -57,10 +57,9 @@ public class Miner extends Profession {
     @Override
     public void action(Event event) {
 
-        if (event instanceof BlockBreakEvent) {
+        if (event instanceof BlockBreakEvent breakEvent) {
             boolean success = false;
-            Material mat = null;
-            BlockBreakEvent breakEvent = (BlockBreakEvent) event;
+            Material material = null;
             switch (level) {
                 case 0 : {} break;
 
@@ -76,7 +75,7 @@ public class Miner extends Profession {
 
             if (!isFrozen && success && (level < 4) ) {
                 for (Requirement requirement : requirements.get(level)) {
-                    if (requirement.getDisplayedItem() == mat){
+                    if (requirement.getDisplayedItem() == material){
                         if (requirement.inc()) {
                             this.requirInfo( requirement, breakEvent.getPlayer()  );
 

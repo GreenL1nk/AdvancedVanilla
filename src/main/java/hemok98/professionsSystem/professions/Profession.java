@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import java.util.List;
-import java.util.Objects;
 
 public abstract class Profession {
     protected List<List<Requirement>> requirements;

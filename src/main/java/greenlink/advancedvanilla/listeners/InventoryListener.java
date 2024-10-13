@@ -20,6 +20,7 @@ public class InventoryListener extends AbstractListener {
         if (event.getClickedInventory() != null) {
             if (event.getView().getTopInventory().getHolder() instanceof AbstractInventoryHolder) {
                 if (event.getRawSlot() > event.getView().getTopInventory().getSize() - 1) {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) event.setCancelled(true); // TODO check the used slots
                     ((AbstractInventoryHolder) event.getView().getTopInventory().getHolder()).clickFromPlayerInventory(event);
                 }
             }

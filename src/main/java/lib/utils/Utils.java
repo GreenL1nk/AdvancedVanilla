@@ -4,11 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,14 +31,6 @@ public class Utils {
     public static List<Material> getOreMaterials() {
         if (ores.isEmpty()) ores = Arrays.stream(Material.values()).filter(material -> material.getKey().value().toLowerCase().contains("ore")).collect(Collectors.toList());
         return ores;
-    }
-
-    public static ItemStack getItem(Component name, Material material) {
-        ItemStack itemStack = new ItemStack(material);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.displayName(name);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
     }
 
     public static String generateRandomCode() {

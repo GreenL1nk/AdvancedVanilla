@@ -2,7 +2,6 @@ package greenlink.advancedvanilla.compasSystem;
 
 import greenlink.advancedvanilla.PlayerManager;
 import greenlink.advancedvanilla.RpPlayer;
-import greenlink.advancedvanilla.compasSystem.CompasListener;
 import lib.utils.AbstractCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

@@ -1,7 +1,6 @@
 package greenlink.advancedvanilla.changelogNoteSystem;
 
 import greenlink.advancedvanilla.AdvancedVanilla;
-import greenlink.advancedvanilla.DatabaseConnector;
 import lib.utils.AbstractListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

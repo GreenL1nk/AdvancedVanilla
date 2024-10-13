@@ -4,9 +4,9 @@ import greenlink.advancedvanilla.bankingSystem.BankingSystem;
 import greenlink.advancedvanilla.changelogNoteSystem.ChangelogCommand;
 import greenlink.advancedvanilla.changelogNoteSystem.ChangelogContainer;
 import greenlink.advancedvanilla.changelogNoteSystem.ChangelogNotifyListener;
-import greenlink.advancedvanilla.compasSystem.CompassCommand;
 import greenlink.advancedvanilla.comands.ProfileCommand;
 import greenlink.advancedvanilla.compasSystem.CompasListener;
+import greenlink.advancedvanilla.compasSystem.CompassCommand;
 import greenlink.advancedvanilla.customrecipes.RecipesFixListener;
 import greenlink.advancedvanilla.listeners.*;
 import greenlink.advancedvanilla.tradeSystem.SidebarInfoSystem;
@@ -17,10 +17,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdvancedVanilla extends JavaPlugin {
     public static final String HEMOK98_BUILD_NUMBER = "226";
-    public static final String GREENLINK_BUILD_NUMBER = "141";
+    public static final String GREENLINK_BUILD_NUMBER = "156";
     public static String VERSION_NUMBER = "";
     private static AdvancedVanilla instance;
-    public final boolean discordEnabled = this.getConfig().getBoolean("discord.enable");
 
     @Override
     public void onEnable() {

@@ -16,7 +16,7 @@ def getVersionName() {
 
 plugins {
     id 'java'
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "8.3.3"
 }
 
 group = 'greenlink'
@@ -32,25 +32,21 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
-    maven {
-        name = "jeff-media-public"
-        url = "https://hub.jeff-media.com/nexus/repository/jeff-media-public/"
-    }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("org.jetbrains:annotations:15.0")
-    implementation("com.jeff_media:CustomBlockData:2.2.0")
+    implementation 'com.jeff-media:custom-block-data:2.2.3'
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 tasks.withType(JavaCompile).configureEach {

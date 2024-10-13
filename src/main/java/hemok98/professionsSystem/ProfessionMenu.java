@@ -123,8 +123,8 @@ public class ProfessionMenu extends AbstractInventoryHolder {
         event.setCancelled(true);
     }
 
-    public static void display(Player player, Profession proffession){
-        ProfessionMenu professionSelectMenu = new ProfessionMenu(proffession, player);
+    public static void display(Player player, Profession profession){
+        ProfessionMenu professionSelectMenu = new ProfessionMenu(profession, player);
         Bukkit.getServer().getScheduler().runTaskLater(AdvancedVanilla.getInstance(),()->{ professionSelectMenu.open(); }, 1);
     }
 }

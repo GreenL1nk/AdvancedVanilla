@@ -20,12 +20,13 @@ public class ProfessionManager extends AbstractListener {
 
     private List<Profession> professionList;
     private static ProfessionManager instance;
+    private int cdChangeTime = 12 * 3600000; //12 hours
 
     public ProfessionManager(@NotNull JavaPlugin plugin) {
         super(plugin);
         professionList = new ArrayList<>();
-        professionList.add(new Miner(true, Material.IRON_PICKAXE, "Шахтёр"));
-        professionList.add(new Woodcutter(true, Material.IRON_AXE, "Дровосек"));
+        professionList.add(new Miner(false, Material.IRON_PICKAXE, "Шахтёр"));
+        professionList.add(new Woodcutter(false, Material.IRON_AXE, "Дровосек"));
         instance = this;
     }
 
@@ -67,7 +68,7 @@ public class ProfessionManager extends AbstractListener {
                 return false;
             } else {
 
-                if ( rpPlayer.getProfessionTimeChange() + 12*60*60*1000 < System.currentTimeMillis() ) {
+                if ( rpPlayer.getProfessionTimeChange() + cdChangeTime < System.currentTimeMillis() ) {
                     if (!playerProf.levelDown()) {
                         rpPlayer.setOldProfession(playerProf);
                     } else rpPlayer.setOldProfession(null);

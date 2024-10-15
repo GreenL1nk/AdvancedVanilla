@@ -70,8 +70,8 @@ public class ProfessionMenu extends AbstractInventoryHolder {
 
             for (int i = 0; i < requirements.size(); i++) {
                 Requirement requirement = requirements.get(i);
-                ItemStack itemStack = new ItemStack(requirement.getDisplayedItem());
-                String temp = "0/" + requirement.getNeededAmount();
+                ItemStack itemStack = new ItemStack(requirement.getMaterial());
+                String temp = requirement.getProgress() + "/" + requirement.getNeededAmount();
                 if (profession.isFrozen() ) temp = requirement.getNeededAmount() + "";
                 ItemChanger.setLore(itemStack, List.of( "", requirement.getDescription(), temp ), new int[]{11184810, 11184810, 9290582});
 

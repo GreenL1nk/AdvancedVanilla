@@ -1,19 +1,21 @@
 package hemok98.professionsSystem;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 public class Requirement {
     private Requirements action;
-    private Material displayedItem;
+    private Material material;
     private String description;
     private int neededAmount;
     private int progress;
 
     private boolean isComplete;
 
-    public Requirement(Requirements action, Material displayedItem, String description, int neededAmount, int progress) {
+    public Requirement(Requirements action, Material material, String description, int neededAmount, int progress) {
         this.action = action;
-        this.displayedItem = displayedItem;
+        this.material = material;
         this.description = description;
         this.neededAmount = neededAmount;
         this.progress = progress;
@@ -24,8 +26,8 @@ public class Requirement {
         return action;
     }
 
-    public Material getDisplayedItem() {
-        return displayedItem;
+    public Material getMaterial() {
+        return material;
     }
 
     public String getDescription() {
@@ -40,7 +42,8 @@ public class Requirement {
         return progress;
     }
 
-    public boolean inc(){
+    public boolean inc(Player player) {
+        player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 2);
         if (progress >= neededAmount) return false;
         progress++;
         if (progress == neededAmount) {
@@ -52,5 +55,9 @@ public class Requirement {
 
     public boolean isComplete() {
         return isComplete;
+    }
+
+    public boolean checkEquals(Material checkMaterial) {
+        return this.material.equals(checkMaterial) || this.material.equals(Material.getMaterial("deepslate_" + checkMaterial.getKey().getKey()));
     }
 }

@@ -36,6 +36,10 @@ public abstract class Profession {
         return isFrozen;
     }
 
+    public void setFrozen(boolean frozen) {
+        isFrozen = frozen;
+    }
+
     public boolean levelDown(){
         if (level > 0) level--;
         return level == 0;
@@ -43,7 +47,7 @@ public abstract class Profession {
 
     public abstract void action(Event event);
 
-    protected void requirInfo(Requirement requirement, Player player){
+    protected void requirementInfo(Requirement requirement, Player player){
         player.sendMessage(
                 Component.text("\n" + requirement.getDescription() + ": ").color(TextColor.color(11184810)  ).
                         append( Component.text( requirement.getProgress() ).color(TextColor.color(9290582) ) ).

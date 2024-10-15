@@ -56,6 +56,7 @@ public class RpPlayer extends MyObservable {
         notifyObservers();
     }
 
+    @Nullable
     public Profession getOldProfession() {
         return oldProfession;
     }

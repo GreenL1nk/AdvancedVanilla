@@ -1,5 +1,6 @@
 package greenlink.advancedvanilla;
 
+import com.jeff_media.customblockdata.CustomBlockData;
 import greenlink.advancedvanilla.bankingSystem.BankingSystem;
 import greenlink.advancedvanilla.changelogNoteSystem.ChangelogCommand;
 import greenlink.advancedvanilla.changelogNoteSystem.ChangelogContainer;
@@ -17,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdvancedVanilla extends JavaPlugin {
     public static final String HEMOK98_BUILD_NUMBER = "226";
-    public static final String GREENLINK_BUILD_NUMBER = "156";
+    public static final String GREENLINK_BUILD_NUMBER = "164";
     public static String VERSION_NUMBER = "";
     private static AdvancedVanilla instance;
 
@@ -43,6 +44,8 @@ public final class AdvancedVanilla extends JavaPlugin {
         new ChangelogNotifyListener(this);
         new BankingSystem(this);
         new hemok98.professionsSystem.ProfessionManager(this);
+        new BlockListener(this);
+        CustomBlockData.registerListener(this);
 
         ChangelogContainer.loadChanges();
 
@@ -60,8 +63,6 @@ public final class AdvancedVanilla extends JavaPlugin {
             PlayerManager.getInstance().saveRpPlayer(onlinePlayer.getUniqueId());
         }
         DatabaseConnector.getInstance().closeConnection();
-
-        //DiscordManager.getInstance().getJda().shutdownNow();
     }
 
     public static AdvancedVanilla getInstance() {

@@ -105,6 +105,10 @@ public class ProfessionSelectMenu extends AbstractInventoryHolder {
 
             } else {
                 Profession profession = professionPlace.get(event.getRawSlot());
+                Profession playerProfession = PlayerManager.getInstance().getPlayer(requester.getUniqueId()).getProfession();
+                if (playerProfession != null && playerProfession.getClass() == professionPlace.get(event.getRawSlot()).getClass()) {
+                    profession = playerProfession;
+                }
                 if (profession != null) {
                     ProfessionMenu.display( requester, profession );
                 }

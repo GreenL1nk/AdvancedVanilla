@@ -9,6 +9,7 @@ import greenlink.advancedvanilla.comands.ProfileCommand;
 import greenlink.advancedvanilla.compasSystem.CompasListener;
 import greenlink.advancedvanilla.compasSystem.CompassCommand;
 import greenlink.advancedvanilla.customrecipes.RecipesFixListener;
+import greenlink.advancedvanilla.items.CustomItem;
 import greenlink.advancedvanilla.listeners.*;
 import greenlink.advancedvanilla.tradeSystem.SidebarInfoSystem;
 import greenlink.advancedvanilla.tradeSystem.VillagerTradingSystem;
@@ -18,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdvancedVanilla extends JavaPlugin {
     public static final String HEMOK98_BUILD_NUMBER = "226";
-    public static final String GREENLINK_BUILD_NUMBER = "164";
+    public static final String GREENLINK_BUILD_NUMBER = "189";
     public static String VERSION_NUMBER = "";
     private static AdvancedVanilla instance;
 
@@ -52,7 +53,8 @@ public final class AdvancedVanilla extends JavaPlugin {
         new CompassCommand().register(this, "compass");
         new ProfileCommand().register(this, "profile" );
         new ChangelogCommand().register(this, "changelog");
-        
+
+        CustomItem.init();
     }
 
     @Override

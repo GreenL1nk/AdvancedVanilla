@@ -27,7 +27,7 @@ import static org.bukkit.enchantments.Enchantment.*;
 
 public class EnchantmentsFixListener extends AbstractListener {
 
-    private static final List<Enchantment> DISSALLOWED_ENCHANTS = Arrays.asList(RIPTIDE, FLAME, INFINITY, FIRE_ASPECT, LOYALTY);
+    private static final List<Enchantment> DISSALLOWED_ENCHANTS = Arrays.asList(RIPTIDE, ARROW_FIRE, ARROW_INFINITE, FIRE_ASPECT, LOYALTY);
     private final int sharpnessMax = 4;
     private final int powerMax = 4;
 
@@ -73,7 +73,7 @@ public class EnchantmentsFixListener extends AbstractListener {
     @EventHandler
     public void flameFix(EntityShootBowEvent event) {
         if (event.getBow() != null) {
-            event.getBow().removeEnchantment(FLAME);
+            event.getBow().removeEnchantment(ARROW_FIRE);
 
         }
 
@@ -89,10 +89,10 @@ public class EnchantmentsFixListener extends AbstractListener {
         //System.out.println(event.getRawSlot());
         if (event.getRawSlot() == 2) {
             if (event.getCurrentItem() != null) {
-                Integer sharpLvl = event.getCurrentItem().getEnchantments().get(SHARPNESS);
+                Integer sharpLvl = event.getCurrentItem().getEnchantments().get(DAMAGE_ALL);
 
                 if (sharpLvl != null && sharpLvl > sharpnessMax) {
-                    event.getCurrentItem().addEnchantment(SHARPNESS, sharpnessMax);
+                    event.getCurrentItem().addEnchantment(DAMAGE_ALL, sharpnessMax);
                 }
             }
         }
@@ -101,14 +101,14 @@ public class EnchantmentsFixListener extends AbstractListener {
     @EventHandler
     public void anvilFix2(PrepareAnvilEvent event) {
         if (event.getResult() == null) return;
-        Integer sharpLvl = event.getResult().getEnchantments().get(SHARPNESS);
+        Integer sharpLvl = event.getResult().getEnchantments().get(DAMAGE_ALL);
         if (sharpLvl != null && sharpLvl > sharpnessMax) {
-            event.getResult().addEnchantment(SHARPNESS, sharpnessMax);
+            event.getResult().addEnchantment(DAMAGE_ALL, sharpnessMax);
         }
 
-        Integer powerLvl = event.getResult().getEnchantments().get(POWER);
+        Integer powerLvl = event.getResult().getEnchantments().get(ARROW_FIRE);
         if (powerLvl != null && powerLvl > powerMax) {
-            event.getResult().addEnchantment(POWER, powerMax);
+            event.getResult().addEnchantment(ARROW_FIRE, powerMax);
         }
     }
 

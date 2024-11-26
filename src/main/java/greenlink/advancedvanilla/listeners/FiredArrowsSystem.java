@@ -28,7 +28,7 @@ public class FiredArrowsSystem extends AbstractListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void specialFireArrows(EntityShootBowEvent event) {
         if (event.getBow() != null) {
-            event.getBow().removeEnchantment(Enchantment.FLAME);
+            event.getBow().removeEnchantment(Enchantment.ARROW_FIRE);
         }
 
         if (event.getProjectile().getType().equals(EntityType.ARROW)) {

@@ -4,6 +4,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -12,18 +15,43 @@ import java.util.List;
 
 public class ItemChanger {
 
-    public static ItemStack getItem(Component name, Material material) {
-        ItemStack itemStack = new ItemStack(material);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.displayName(name.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE));
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
+    public static ItemStack getItem(Material material, int amount) {
+        ItemStack item = new ItemStack(material, amount);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier("hide",0, AttributeModifier.Operation.MULTIPLY_SCALAR_1));
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
-    public static ItemStack changeName(ItemStack item, String str){
+    public static ItemStack changeName(ItemStack item, String name) {
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta != null) {
-            itemMeta.displayName(Component.text(str).decoration(TextDecoration.ITALIC, false));
+            itemMeta.displayName(Component.text(name).decoration(TextDecoration.ITALIC, false));
+            item.setItemMeta(itemMeta);
+        }
+
+        return item;
+    }
+
+    public static ItemStack changeName(Material material, String name, int amount, TextColor color) {
+        ItemStack item = getItem(material, amount);
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta != null) {
+            itemMeta.displayName(Component.text(name).color(color).decoration(TextDecoration.ITALIC, false));
+            item.setItemMeta(itemMeta);
+        }
+
+        return item;
+    }
+
+    public static ItemStack changeName(Material material, String name, int amount) {
+        ItemStack item = getItem(material, amount);
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta != null) {
+            itemMeta.displayName(Component.text(name).decoration(TextDecoration.ITALIC, false));
             item.setItemMeta(itemMeta);
         }
 
@@ -39,11 +67,11 @@ public class ItemChanger {
         return item;
     }
 
-    public static ItemStack changeName(Material material, String name, Integer color){
+    public static ItemStack changeName(Material material, String name, String hexColor){
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta != null) {
-            itemMeta.displayName(Component.text(name).color(TextColor.color(color)).decoration(TextDecoration.ITALIC, false));
+            itemMeta.displayName(Component.text(name).color(TextColor.fromHexString(hexColor)).decoration(TextDecoration.ITALIC, false));
             item.setItemMeta(itemMeta);
         }
         return item;

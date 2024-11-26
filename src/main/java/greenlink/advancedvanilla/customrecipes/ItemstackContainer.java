@@ -29,27 +29,27 @@ public class ItemstackContainer {
     }
 
     private static Enchantments enchToEnum(Enchantment base){
-        if (base == Enchantment.POWER){
+        if (base == Enchantment.ARROW_DAMAGE){
             return Enchantments.POWER;
         }
 
-        if (base == Enchantment.UNBREAKING) {
+        if (base == Enchantment.DURABILITY) {
             return Enchantments.UNBREAKING;
         }
 
-        if (base == Enchantment.PROTECTION) {
+        if (base == Enchantment.PROTECTION_ENVIRONMENTAL) {
             return Enchantments.PROTECTION;
         }
 
-        if (base == Enchantment.FORTUNE) {
+        if (base == Enchantment.LOOT_BONUS_BLOCKS) {
             return Enchantments.FORTUNE;
         }
 
-        if (base == Enchantment.FLAME) {
+        if (base == Enchantment.ARROW_FIRE) {
             return Enchantments.FLAME;
         }
 
-        if (base == Enchantment.INFINITY) {
+        if (base == Enchantment.ARROW_INFINITE) {
             return Enchantments.INFINITY;
         }
 
@@ -58,12 +58,12 @@ public class ItemstackContainer {
 
     private static Enchantment enchFromEnum(Enchantments base) {
         return switch (base) {
-            case UNBREAKING -> Enchantment.UNBREAKING;
-            case PROTECTION -> Enchantment.PROTECTION;
-            case POWER -> Enchantment.POWER;
-            case FORTUNE -> Enchantment.FORTUNE;
-            case INFINITY -> Enchantment.INFINITY;
-            case FLAME -> Enchantment.FLAME;
+            case UNBREAKING -> Enchantment.DURABILITY;
+            case PROTECTION -> Enchantment.PROTECTION_ENVIRONMENTAL;
+            case POWER -> Enchantment.ARROW_DAMAGE;
+            case FORTUNE -> Enchantment.LOOT_BONUS_BLOCKS;
+            case INFINITY -> Enchantment.ARROW_INFINITE;
+            case FLAME -> Enchantment.ARROW_FIRE;
         };
 
     }

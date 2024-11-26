@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +36,7 @@ public class Utils {
 
     public static String generateRandomCode() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
 
         return IntStream.range(0, 5)
                 .mapToObj(i -> String.valueOf(characters.charAt(random.nextInt(characters.length()))))

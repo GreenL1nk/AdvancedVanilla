@@ -4,6 +4,7 @@ import greenlink.advancedvanilla.AdvancedVanilla;
 import hemok98.professionsSystem.professions.Profession;
 import lib.utils.AbstractInventoryHolder;
 import lib.utils.ItemChanger;
+import lib.utils.RomanNumeralConverter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
@@ -45,11 +46,15 @@ public class ProfessionMenu extends AbstractInventoryHolder {
 
 
         for (int i = 0; i < level; i++) {
-            this.inventory.setItem(levelPosition[i], new ItemStack(Material.LIME_STAINED_GLASS_PANE, i+1));
+            ItemStack itemStack = ItemChanger.changeName(Material.LIME_STAINED_GLASS_PANE,
+                    "Уровень " + RomanNumeralConverter.toRoman(i + 1), i + 1, TextColor.color(11184810));
+            this.inventory.setItem(levelPosition[i], itemStack);
         }
 
         for (int i = level; i < 4; i++) {
-            this.inventory.setItem(levelPosition[i], new ItemStack(Material.RED_STAINED_GLASS_PANE, i+1));
+            ItemStack itemStack = ItemChanger.changeName(Material.RED_STAINED_GLASS_PANE,
+                    "Уровень " + RomanNumeralConverter.toRoman(i + 1), i + 1, TextColor.color(11184810));
+            this.inventory.setItem(levelPosition[i], itemStack);
         }
 
         updateReq();
@@ -79,8 +84,9 @@ public class ProfessionMenu extends AbstractInventoryHolder {
             }
         }
 
-        ItemStack item = new ItemStack(profession.getDisplayedItem(), level+1);
-        ItemChanger.changeName(item, "Информация об уровне", 11184810 );
+
+        ItemStack item = ItemChanger.getItem(profession.getDisplayedItem(), level + 1);
+        ItemChanger.changeName(item, "Информация об уровне " + RomanNumeralConverter.toRoman(level + 1), 11184810 );
         ItemChanger.setLore(item, List.of( "", "Уровень выше", "" ), new int[]{11184810, 11184810, 9290582});
         //lore.add(Component.text("Купить предмет: ").color(TextColor.color(11184810)).
         //                        append(Component.text("ЛКМ").color(TextColor.color(16777045))).decoration(TextDecoration.ITALIC, false));

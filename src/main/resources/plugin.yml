@@ -2,6 +2,7 @@ name: AdvancedVanilla
 version: '${version}'
 main: greenlink.advancedvanilla.AdvancedVanilla
 api-version: 1.19
+softdepend: ["PlaceholderAPI"]
 commands:
   profile:
     usage: ''

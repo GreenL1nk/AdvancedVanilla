@@ -62,7 +62,7 @@ public class VillagerTradeGui extends AbstractInventoryHolder implements MyObser
             //System.out.println(slot + " " + this.items.length);
             if (slot < this.items.length) {
                 if ( event.isLeftClick() )
-                    if ( items[slot].tryBuyitem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {
+                    if ( items[slot].tryBuyItem(((Player) event.getWhoClicked()), !event.isShiftClick() )) {
                         requester.playSound( requester.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0F, 0.2F);
                     } else {
                         requester.playSound( requester.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);

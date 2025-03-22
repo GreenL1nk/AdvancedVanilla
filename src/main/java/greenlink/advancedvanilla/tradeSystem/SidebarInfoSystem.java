@@ -18,8 +18,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Описывает поведение вывода информации в sidebar scoreboard игроку
+ */
 public class SidebarInfoSystem extends AbstractListener implements MyObserver {
     private static SidebarInfoSystem instance;
+
     public SidebarInfoSystem(@NotNull JavaPlugin plugin) {
         super(plugin);
         instance = this;
@@ -28,6 +32,9 @@ public class SidebarInfoSystem extends AbstractListener implements MyObserver {
         }
     }
 
+    /**
+     * @param player игрок которому нужно отобразить информацию
+     */
     public static void addSidebarToPlayer( Player player ){
         RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(player.getUniqueId());
         Scoreboard playerScoreBoard = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
@@ -70,6 +77,10 @@ public class SidebarInfoSystem extends AbstractListener implements MyObserver {
         rpPlayer.addObserver(instance);
     }
 
+    /**
+     * Обновляет данные в sidebar после тригерного изменения
+     * @param observable игрок чьи данные изменились
+     */
     @Override
     public void onUpdate(MyObservable observable) {
         RpPlayer rpPlayer = (RpPlayer) observable;
@@ -98,14 +109,23 @@ public class SidebarInfoSystem extends AbstractListener implements MyObserver {
         }
     }
 
+    /**
+     * Проверка при входе игрока нужно ли ему вывести информацию в sidebar
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         if ( PlayerManager.getInstance().getPlayer(player.getUniqueId()).isDisplaySidebarInfo() ) addSidebarToPlayer(player);
     }
 
+    /**
+     * Singleton
+     */
     public static SidebarInfoSystem getInstance() { return instance;}
 
+    /**
+     * Очищение игрока из списка тех кому надо выводить информацию при его ливе с сервера
+     */
     @EventHandler
     public void onLeave(PlayerQuitEvent event){
         Player player = event.getPlayer();

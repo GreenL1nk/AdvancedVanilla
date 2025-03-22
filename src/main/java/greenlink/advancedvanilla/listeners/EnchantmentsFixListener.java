@@ -25,9 +25,12 @@ import java.util.Map;
 
 import static org.bukkit.enchantments.Enchantment.*;
 
+/**
+ * Листнер блокирующий использование некоторых зачарований или ограничивающий максимально получаемый уровень этих зачарований
+ */
 public class EnchantmentsFixListener extends AbstractListener {
 
-    private static final List<Enchantment> DISSALLOWED_ENCHANTS = Arrays.asList(RIPTIDE, ARROW_FIRE, ARROW_INFINITE, FIRE_ASPECT, LOYALTY);
+    private static final List<Enchantment> DISSALLOWED_ENCHANTS = Arrays.asList(RIPTIDE, ARROW_FIRE, ARROW_INFINITE, FIRE_ASPECT, LOYALTY); //недопустимые к получению зачарования
     private final int sharpnessMax = 4;
     private final int powerMax = 4;
 
@@ -35,17 +38,21 @@ public class EnchantmentsFixListener extends AbstractListener {
         super(plugin);
     }
 
+    /**
+     * Блокирует накладывание ненужных чар при использовании стола зачарований
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void enchantmentFix(EnchantItemEvent event) {
-        //event.getEnchantsToAdd()
         for (Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()) {
             if (DISSALLOWED_ENCHANTS.contains(entry.getKey())) {
-                //System.out.println(event.getEnchanter().getName() + " disallowed " + entry.getKey());
                 event.getEnchantsToAdd().remove(entry.getKey());
             }
         }
     }
 
+    /**
+     * Отключает работу "Ледоходов"
+     */
     @EventHandler
     public void IceWalkerFix(EntityBlockFormEvent event) {
         if (event.getEntity() instanceof Player) {
@@ -55,6 +62,9 @@ public class EnchantmentsFixListener extends AbstractListener {
         }
     }
 
+    /**
+     * Отключает работу "Тягуна"
+     */
     @EventHandler
     public void riptideFix(PlayerMoveEvent event) {
         if (event.getPlayer().isRiptiding()) {
@@ -70,11 +80,13 @@ public class EnchantmentsFixListener extends AbstractListener {
         }
     }
 
+    /**
+     * Отключение ванильной работы чара "Flame"
+     */
     @EventHandler
     public void flameFix(EntityShootBowEvent event) {
         if (event.getBow() != null) {
             event.getBow().removeEnchantment(ARROW_FIRE);
-
         }
 
         if (event.getProjectile().getType().equals(EntityType.ARROW)) {
@@ -83,6 +95,9 @@ public class EnchantmentsFixListener extends AbstractListener {
         }
     }
 
+    /**
+     * Ограничение максимального уровня определённых чар при совмещении их в наковальни
+     */
     // TODO: 12.06.2023 Check - isWorking?
     public void anvilFix1(InventoryClickEvent event) {
         if (!event.getInventory().getType().equals(InventoryType.ANVIL)) return;
@@ -98,6 +113,9 @@ public class EnchantmentsFixListener extends AbstractListener {
         }
     }
 
+    /**
+     * Ограничение максимального уровня определённых чар при совмещении их в наковальни
+     */
     @EventHandler
     public void anvilFix2(PrepareAnvilEvent event) {
         if (event.getResult() == null) return;

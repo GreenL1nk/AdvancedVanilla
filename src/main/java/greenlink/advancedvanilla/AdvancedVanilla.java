@@ -21,8 +21,13 @@ public final class AdvancedVanilla extends JavaPlugin {
     public static final String HEMOK98_BUILD_NUMBER = "226";
     public static final String GREENLINK_BUILD_NUMBER = "189";
     public static String VERSION_NUMBER = "";
-    private static AdvancedVanilla instance;
 
+    private static AdvancedVanilla instance; //Синглтон переменная
+
+    /**
+     * Entry Point всего плагина
+     *
+     */
     @Override
     public void onEnable() {
 

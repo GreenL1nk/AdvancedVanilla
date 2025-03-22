@@ -14,6 +14,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Листнер отслеживающий заход и выход игроков на сервер
+ */
 public class ConnectionListener extends AbstractListener {
     private int pluginVersion = 0;
 
@@ -31,6 +34,9 @@ public class ConnectionListener extends AbstractListener {
         int i = 12121;
     }
 
+    /**
+     * Вывод всем заходящим игрокам информации в sidebar, а также установка нужного header`a в tablist при заходе на сервер
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         RpPlayer rpPlayer = PlayerManager.getInstance().getPlayer(event.getPlayer().getUniqueId());
@@ -43,6 +49,9 @@ public class ConnectionListener extends AbstractListener {
         );
     }
 
+/**
+ * discord auth method
+  */
 //    @EventHandler
 //    public void onLogin(PlayerLoginEvent event) {
 //        if (AdvancedVanilla.getInstance().discordEnabled) {

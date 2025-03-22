@@ -23,13 +23,17 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Листнер, ловящий открытие игроком жителей и вместо стандартного меню открывающий соответствующий профессии {@link VillagerTradeGui}
+ */
 public class VillagerTradingSystem extends AbstractListener {
 
-    private HashMap<Villager.Profession, TradingItem[]> tradingItems;
+    private HashMap<Villager.Profession, TradingItem[]> tradingItems; //мапа хранящая трейды для каждой профессии
 
     public VillagerTradingSystem(JavaPlugin plugin){
         super(plugin);
         HashMap<Villager.Profession, TradingItem[]> itemsMap = null;
+        //попытка загрузить конфиг с трейдами для жителей
         try {
             String result;
             Path path = plugin.getDataFolder().toPath().resolve("tradingItems.json");
@@ -57,6 +61,7 @@ public class VillagerTradingSystem extends AbstractListener {
             Bukkit.getLogger().info("tradingItems.json cant load. " + e.toString());
         }
 
+        //генерация стандартного конфига при провале попытки загрузить пользовательский
         if (itemsMap == null) {
             TradingItem tradingItem = new TradingItem(Material.IRON_INGOT, 1, 10, new int[]{10, 20, 30, 40}, true, true, new long[]{ 15000,20000,20000,20000});
             tradingItems = new HashMap<>();
@@ -69,24 +74,14 @@ public class VillagerTradingSystem extends AbstractListener {
                 }, 0,20);
         }
 
-//        try {
-//            Path path = plugin.getDataFolder().toPath();
-//            if (Files.notExists(path)) Files.createDirectories(path);
-//
-//            Path playerDataFile = path.resolve("quentas.json");
-//            final ArrayList<String> lines = new ArrayList<>();
-//            lines.add(Json.toJson(tradingItems));
-//
-//            Files.write(playerDataFile, lines, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
-//
-//        } catch (Exception e){
-//
-//        }
-
     }
+
+    /**
+     * Отслеживает профессию жителя и в зависимости от неё открывает {@link VillagerTradeGui} с нужными {@link VillagerTradingSystem#tradingItems}
+     * @param event ивент открытия жителя
+     */
     @EventHandler
     public void onVillagerOpen(PlayerInteractAtEntityEvent event){
-        //System.out.println(event.getRightClicked().getClass());
         if ( event.getRightClicked() instanceof Villager) {
             event.setCancelled(true);
             Villager.Profession profession = ((Villager) event.getRightClicked()).getProfession();
@@ -94,7 +89,7 @@ public class VillagerTradingSystem extends AbstractListener {
             if (profession == Villager.Profession.MASON || profession == Villager.Profession.WEAPONSMITH) profession = Villager.Profession.TOOLSMITH;
             if (profession == Villager.Profession.SHEPHERD || profession == Villager.Profession.LEATHERWORKER) profession = Villager.Profession.FLETCHER;
             if (profession == Villager.Profession.BUTCHER ) profession = Villager.Profession.FARMER;
-            //if (profession == Villager.Profession.CARTOGRAPHER ) profession = Villager.Profession.CLERIC;
+
             TradingItem[] items = tradingItems.get(profession);
 
             if (items != null) {
@@ -105,6 +100,10 @@ public class VillagerTradingSystem extends AbstractListener {
 
     }
 
+
+    /**
+     * Защита от двойного открытия жителя из-за особенности работы бакита
+     */
     @EventHandler
     public void onVillagerOpen(InventoryOpenEvent event){
         if (event.getInventory() instanceof  MerchantInventory) event.setCancelled(true);

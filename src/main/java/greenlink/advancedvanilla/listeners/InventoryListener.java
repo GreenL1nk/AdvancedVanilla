@@ -10,11 +10,20 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+
+/**
+* Класс отлавливающий нажатия игроком в интерфейсах
+*/
 public class InventoryListener extends AbstractListener {
     public InventoryListener(@NotNull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+    * Ловит нажатия игроком по интерфейсам если открыт интерфейс, производный от {@link AbstractInventoryHolder}</p>
+     * при отлове нужных нажатий вызвает click у {@link AbstractInventoryHolder}</p>
+     * Блокирует перенос любых предметов из наших интерфейсов
+    * */
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getClickedInventory() != null) {
@@ -33,6 +42,9 @@ public class InventoryListener extends AbstractListener {
         }
     }
 
+    /**
+     * Блокирует возможность растягивания с делением предметов по интерфейсам от {@link AbstractInventoryHolder}
+    * */
     @EventHandler
     public void onDrag(InventoryDragEvent event) {
         if (event.getRawSlots().stream().anyMatch(slot -> slot <= event.getView().getTopInventory().getSize() - 1)) {
@@ -42,6 +54,9 @@ public class InventoryListener extends AbstractListener {
     }
 
 
+    /**
+     * Отлавливает закрытия интерфейсов созданных на базе {@link AbstractInventoryHolder}
+     */
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof AbstractInventoryHolder) {
